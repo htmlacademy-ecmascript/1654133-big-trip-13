@@ -146,4 +146,4 @@ export function createAddNewPoint(point) {
           </section>
       </form>
   </li>`;
-};
+}

@@ -28,4 +28,4 @@ export function createTripInfo(tripPoints) {
       </div>
       ${createCostView(cost)}
   </section>`;
-};
+}

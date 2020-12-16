@@ -132,4 +132,4 @@ export function generateTripPoint() {
     dates: getRandomDates(),
     isFavorite: Boolean(getRandomInteger(0, 1)),
   };
-};
+}

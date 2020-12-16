@@ -36,4 +36,3 @@ for (let i = 1; i < TRIP_POINTS; i++) {
 function render(container, template, place) {
     container.insertAdjacentHTML(place, template);
 }
-

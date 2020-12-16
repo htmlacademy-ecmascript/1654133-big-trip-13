@@ -146,4 +146,4 @@ export function createEditPoint(point) {
             </section>
         </form>
     </li>`;
-};
+}
