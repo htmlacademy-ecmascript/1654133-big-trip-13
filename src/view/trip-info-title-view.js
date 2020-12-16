@@ -1,5 +1,5 @@
-export function createTripInfoTitle() {
+export function createTripInfoTitle(title) {
     return `
-    <h1 class="trip-info__title">Amsterdam &mdash; Chamonix &mdash; Geneva</h1>
+    <h1 class="trip-info__title">${title}</h1>
     `;
 }

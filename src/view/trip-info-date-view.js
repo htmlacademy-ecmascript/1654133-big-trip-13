@@ -1,5 +1,3 @@
-export function createTripInfoDate() {
-    return `
-    <p class="trip-info__dates">Mar 18&nbsp;&mdash;&nbsp;20</p>
-    `;
+export function createTripInfoDate(range) {
+    return `<p class="trip-info__dates">${range}</p>`;
 }
