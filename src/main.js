@@ -1,12 +1,12 @@
-import {createTripInfo} from './view/trip-info-view';
-import {createTripSwitches} from './view/trip-switches-view';
-import {createTripFilters} from './view/trip-filters-view';
-import {createTripEventsSortForm} from './view/trip-events-sort-form';
-import {createTripEventsList} from './view/trip-events-view';
-import {createAddNewPoint} from './view/trip-add-new-point-view';
-import {createEditPoint} from './view/trip-edit-point-view';
-import {createTripPoint} from './view/trip-point-view';
-import {generateTripPoint} from './const';
+import { createTripInfo } from './view/trip-info';
+import { createTripSwitches } from './view/switches';
+import { createTripFilters } from './view/filters';
+import { createTripEventsSortForm } from './view/events-sort-form';
+import { createTripEventsList } from './view/events';
+import { createAddNewPoint } from './view/add-new-point';
+import { createEditPoint } from './view/edit-point';
+import { createTripPoint } from './view/point';
+import { generateTripPoint } from './mock/point';
 
 const TRIP_POINTS = 20;
 

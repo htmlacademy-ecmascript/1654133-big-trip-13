@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
-const MINUTES_IN_HOUR = 60;
-const HOURS_IN_DAY = 24;
+
+import { MINUTES_IN_HOUR, HOURS_IN_DAY } from '../utils/const';
 
 function createOffersTemplate(offers) {
   let template = '';
@@ -17,7 +17,7 @@ function createOffersTemplate(offers) {
 };
 
 export function createTripPoint(point) {
-  const {type, city, description, price, isFavorite, dates, offers} = point;
+  const {type, city, price, isFavorite, dates, offers} = point;
 
   let duration = dayjs(dates[1]).diff(dayjs(dates[0]), 'hour');
 
@@ -47,9 +47,9 @@ export function createTripPoint(point) {
       <h3 class="event__title">${type} ${city}</h3>
       <div class="event__schedule">
           <p class="event__time">
-          <time class="event__start-time" datetime="2019-03-18T10:30">${dayjs(dates[0]).format('HH:mm')}</time>
+          <time class="event__start-time" datetime="${dayjs(dates[0]).format('YYYY-MM-DDTHH:mm')}">${dayjs(dates[0]).format('HH:mm')}</time>
           &mdash;
-          <time class="event__end-time" datetime="2019-03-18T11:00">${dayjs(dates[1]).format('HH:mm')}</time>
+          <time class="event__end-time" datetime="${dayjs(dates[0]).format('YYYY-MM-DDTHH:mm')}">${dayjs(dates[1]).format('HH:mm')}</time>
           </p>
           <p class="event__duration">${duration}</p>
       </div>
@@ -70,6 +70,5 @@ export function createTripPoint(point) {
           <span class="visually-hidden">Open event</span>
       </button>
       </div>
-  </li>
-  `;
+  </li>`;
 }
