@@ -1,12 +1,12 @@
-import { createTripInfo } from './view/trip-info';
-import { createTripSwitches } from './view/switches';
-import { createTripFilters } from './view/filters';
-import { createTripEventsSortForm } from './view/events-sort-form';
-import { createTripEventsList } from './view/events';
-import { createAddNewPoint } from './view/add-new-point';
-import { createEditPoint } from './view/edit-point';
-import { createTripPoint } from './view/point';
-import { generateTripPoint } from './mock/point';
+import {createTripInfo} from './view/trip-info';
+import Switches from './view/switches';
+import Filters from './view/filters';
+import EventsSortForm from './view/events-sort-form';
+import Events from './view/events';
+import {createAddNewPoint} from './view/add-new-point';
+import {createEditPoint} from './view/edit-point';
+import {createTripPoint} from './view/point';
+import {generateTripPoint} from './mock/point';
 
 const TRIP_POINTS = 20;
 
@@ -19,12 +19,12 @@ const tripMainHandler = document.querySelector('.trip-main');
 const tripControlsHandler = tripMainHandler.querySelector('.trip-controls');
 const tripSwitchesHandler = tripControlsHandler.querySelector('.visually-hidden');
 render(tripMainHandler, createTripInfo(tripPoints), 'afterbegin');
-render(tripSwitchesHandler, createTripSwitches(), 'afterend');
-render(tripControlsHandler, createTripFilters(), 'beforeend');
+render(tripSwitchesHandler, new Switches().getTemplate(), 'afterend');
+render(tripControlsHandler, new Filters().getTemplate(), 'beforeend');
 
 const tripEventsHandler = document.querySelector('.trip-events');
-render(tripEventsHandler, createTripEventsSortForm(), 'beforeend');
-render(tripEventsHandler, createTripEventsList(), 'beforeend');
+render(tripEventsHandler, new EventsSortForm().getTemplate(), 'beforeend');
+render(tripEventsHandler, new Events().getTemplate(), 'beforeend');
 
 const tripEventsListHandler = document.querySelector('.trip-events__list');
 render(tripEventsListHandler, createEditPoint(tripPoints[0]), 'beforeend');

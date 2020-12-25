@@ -1,8 +1,8 @@
 import dayjs from 'dayjs';
 
-import { createEventTypes } from './event-types';
-import { CITIES } from '../utils/const';
-import { getId } from '../utils/tools';
+import EventTypes from './event-types';
+import {CITIES} from '../utils/const';
+import {getId} from '../utils/tools';
 
 function createOffersTemplate(offers) {
   if (Object.keys(offers).length === 0) {
@@ -44,7 +44,7 @@ export function createAddNewPoint(point) {
                   <img class="event__type-icon" width="17" height="17" src="img/icons/flight.png" alt="Event type icon">
               </label>
               <input class="event__type-toggle  visually-hidden" id="event-type-toggle-1" type="checkbox">
-                ${createEventTypes()}
+                ${new EventTypes().getTemplate()}
               </div>
 
               <div class="event__field-group  event__field-group--destination">
