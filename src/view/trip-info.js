@@ -1,10 +1,10 @@
 import dayjs from 'dayjs';
 
-import { createTripInfoTitle } from './info-title';
-import { createTripInfoDate } from './info-date';
-import { createCost } from './cost';
+import InfoTitle from './info-title';
+import InfoDate from './info-date';
+import Cost from './cost';
 
-export function createTripInfo(tripPoints) {
+function createTripInfo(tripPoints) {
   const firstPoint = tripPoints[0];
   const lastPoint = tripPoints[tripPoints.length - 1];
   const tripRange = dayjs(lastPoint.dates[0]).diff(dayjs(firstPoint.dates[0]), 'month') > 0
@@ -25,9 +25,19 @@ export function createTripInfo(tripPoints) {
 
   return `<section class="trip-main__trip-info  trip-info">
       <div class="trip-info__main">
-          ${createTripInfoTitle(tripTitle)}
-          ${createTripInfoDate(tripRange)}
+          ${new InfoTitle(tripTitle).getTemplate()}
+          ${new InfoDate(tripRange).getTemplate()}
       </div>
-      ${createCost(cost)}
+      ${new Cost(cost).getTemplate()}
   </section>`;
+}
+
+export default class TripInfo {
+  constructor(points) {
+    this._element = points;
+  }
+
+  getTemplate() {
+    return createTripInfo(this._element);
+  }
 }

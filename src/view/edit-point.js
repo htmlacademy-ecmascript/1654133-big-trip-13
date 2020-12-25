@@ -31,7 +31,7 @@ function createOffersTemplate(offers) {
 };
 
 
-export function createEditPoint(point) {
+function createEditPoint(point) {
   const {type, city, description, price, isFavorite, dates, offers} = point;
   const startDate = dayjs(dates[0]).format('DD/MM/YY HH:mm');
   const endDate = dayjs(dates[1]).format('DD/MM/YY HH:mm');
@@ -92,4 +92,14 @@ export function createEditPoint(point) {
         </section>
       </form>
     </li>`;
+}
+
+export default class EditPoint {
+  constructor(point) {
+    this._element = point;
+  }
+
+  getTemplate() {
+    return createEditPoint(this._element);
+  }
 }
