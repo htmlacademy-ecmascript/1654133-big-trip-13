@@ -3,6 +3,7 @@ import dayjs from 'dayjs';
 import EventTypes from './event-types';
 import {CITIES} from '../utils/const';
 import {getId} from '../utils/tools';
+import {createElement} from '../utils/utils';
 
 function createOffersTemplate(offers) {
   if (Object.keys(offers).length === 0) {
@@ -96,10 +97,23 @@ function createAddNewPoint(point) {
 
 export default class AddNewPoint {
   constructor(point) {
-    this._element = point;
+    this._point = point;
+    this._element = null;
   }
 
   getTemplate() {
-    return createAddNewPoint(this._element);
+    return createAddNewPoint(this._point);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
   }
 }

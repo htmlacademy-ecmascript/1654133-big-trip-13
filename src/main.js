@@ -7,6 +7,7 @@ import {createAddNewPoint} from './view/add-new-point';
 import EditPoint from './view/edit-point';
 import Point from './view/point';
 import {generateTripPoint} from './mock/point';
+import {renderElement, RenderPosition, renderTemplate} from './utils/utils';
 
 const TRIP_POINTS = 20;
 
@@ -18,21 +19,17 @@ tripPoints.sort(function(a,b) {
 const tripMainHandler = document.querySelector('.trip-main');
 const tripControlsHandler = tripMainHandler.querySelector('.trip-controls');
 const tripSwitchesHandler = tripControlsHandler.querySelector('.visually-hidden');
-render(tripMainHandler, new TripInfo(tripPoints).getTemplate(), 'afterbegin');
-render(tripSwitchesHandler, new Switches().getTemplate(), 'afterend');
-render(tripControlsHandler, new Filters().getTemplate(), 'beforeend');
+renderElement(tripMainHandler, new TripInfo(tripPoints).getElement(), RenderPosition.AFTERBEGIN);
+renderElement(tripSwitchesHandler, new Switches().getElement(), RenderPosition.AFTERBEGIN);
+renderElement(tripControlsHandler, new Filters().getElement(), RenderPosition.BEFOREEND);
 
 const tripEventsHandler = document.querySelector('.trip-events');
-render(tripEventsHandler, new EventsSortForm().getTemplate(), 'beforeend');
-render(tripEventsHandler, new Events().getTemplate(), 'beforeend');
+renderElement(tripEventsHandler, new EventsSortForm().getElement(), RenderPosition.BEFOREEND);
+renderElement(tripEventsHandler, new Events().getElement(), RenderPosition.BEFOREEND);
 
 const tripEventsListHandler = document.querySelector('.trip-events__list');
-render(tripEventsListHandler, new EditPoint(tripPoints[0]).getTemplate(), 'beforeend');
+renderElement(tripEventsListHandler, new EditPoint(tripPoints[0]).getElement(), RenderPosition.BEFOREEND);
 
 for (let i = 1; i < TRIP_POINTS; i++) {
-    render(tripEventsListHandler, new Point(tripPoints[i]).getTemplate(), 'beforeend');
-}
-
-function render(container, template, place) {
-    container.insertAdjacentHTML(place, template);
+  renderElement(tripEventsListHandler, new Point(tripPoints[i]).getElement(), RenderPosition.BEFOREEND);
 }

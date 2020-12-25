@@ -4,6 +4,8 @@ import InfoTitle from './info-title';
 import InfoDate from './info-date';
 import Cost from './cost';
 
+import {createElement} from '../utils/utils';
+
 function createTripInfo(tripPoints) {
   const firstPoint = tripPoints[0];
   const lastPoint = tripPoints[tripPoints.length - 1];
@@ -34,10 +36,23 @@ function createTripInfo(tripPoints) {
 
 export default class TripInfo {
   constructor(points) {
-    this._element = points;
+    this._points = points;
+    this._element = null;
   }
 
   getTemplate() {
-    return createTripInfo(this._element);
+    return createTripInfo(this._points);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
   }
 }

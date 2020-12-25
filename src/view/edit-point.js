@@ -2,6 +2,8 @@ import dayjs from 'dayjs';
 
 import {CITIES} from '../utils/const';
 import {getId} from '../utils/tools';
+import {createElement} from '../utils/utils';
+
 import EventTypes from './event-types';
 
 function createOffersTemplate(offers) {
@@ -36,8 +38,7 @@ function createEditPoint(point) {
   const startDate = dayjs(dates[0]).format('DD/MM/YY HH:mm');
   const endDate = dayjs(dates[1]).format('DD/MM/YY HH:mm');
 
-  return `
-    <li class="trip-events__item">
+  return `<li class="trip-events__item">
       <form class="event event--edit" action="#" method="post">
         <header class="event__header">
           <div class="event__type-wrapper">
@@ -96,10 +97,23 @@ function createEditPoint(point) {
 
 export default class EditPoint {
   constructor(point) {
-    this._element = point;
+    this._point = point;
+    this._element = null;
   }
 
   getTemplate() {
-    return createEditPoint(this._element);
+    return createEditPoint(this._point);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
   }
 }
