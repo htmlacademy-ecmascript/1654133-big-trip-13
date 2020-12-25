@@ -28,8 +28,7 @@ renderElement(tripEventsHandler, new EventsSortForm().getElement(), RenderPositi
 renderElement(tripEventsHandler, new Events().getElement(), RenderPosition.BEFOREEND);
 
 const tripEventsListHandler = document.querySelector('.trip-events__list');
-renderElement(tripEventsListHandler, new EditPoint(tripPoints[0]).getElement(), RenderPosition.BEFOREEND);
 
-for (let i = 1; i < TRIP_POINTS; i++) {
-  renderElement(tripEventsListHandler, new Point(tripPoints[i]).getElement(), RenderPosition.BEFOREEND);
+for (const point of tripPoints) {
+  renderElement(tripEventsListHandler, new Point(point).getElement(), RenderPosition.BEFOREEND);
 }
