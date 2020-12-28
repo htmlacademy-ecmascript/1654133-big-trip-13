@@ -6,7 +6,7 @@ export const RenderPosition = {
   BEFOREEND: `beforeend`
 };
 
-export const renderElement = (container, element, place) => {
+export const render = (container, element, place) => {
   switch (place) {
     case RenderPosition.AFTERBEGIN:
       container.prepend(element);
@@ -51,7 +51,7 @@ export const renderPoint = (container, point) => {
       replaceFormToPoint();
     });
 
-  renderElement(container, pointComponent.getElement(), RenderPosition.BEFOREEND);
+  render(container, pointComponent.getElement(), RenderPosition.BEFOREEND);
 }
 
 export const createElement = (template) => {

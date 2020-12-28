@@ -4,7 +4,7 @@ import Filters from './view/filters';
 import EventsSortForm from './view/events-sort-form';
 import Events from './view/events';
 import {generateTripPoint} from './mock/point';
-import {renderElement, renderPoint, RenderPosition} from './utils';
+import {render, renderPoint, RenderPosition} from './utils';
 
 const TRIP_POINTS = 20;
 const tripPoints = new Array(TRIP_POINTS).fill().map(generateTripPoint);
@@ -15,13 +15,13 @@ tripPoints.sort(function(a,b) {
 const tripMainHandler = document.querySelector('.trip-main');
 const tripControlsHandler = tripMainHandler.querySelector('.trip-controls');
 const tripSwitchesHandler = tripControlsHandler.querySelector('.visually-hidden');
-renderElement(tripMainHandler, new TripInfo(tripPoints).getElement(), RenderPosition.AFTERBEGIN);
-renderElement(tripSwitchesHandler, new Switches().getElement(), RenderPosition.AFTERBEGIN);
-renderElement(tripControlsHandler, new Filters().getElement(), RenderPosition.BEFOREEND);
+render(tripMainHandler, new TripInfo(tripPoints).getElement(), RenderPosition.AFTERBEGIN);
+render(tripSwitchesHandler, new Switches().getElement(), RenderPosition.AFTERBEGIN);
+render(tripControlsHandler, new Filters().getElement(), RenderPosition.BEFOREEND);
 
 const tripEventsHandler = document.querySelector('.trip-events');
-renderElement(tripEventsHandler, new EventsSortForm().getElement(), RenderPosition.BEFOREEND);
-renderElement(tripEventsHandler, new Events().getElement(), RenderPosition.BEFOREEND);
+render(tripEventsHandler, new EventsSortForm().getElement(), RenderPosition.BEFOREEND);
+render(tripEventsHandler, new Events().getElement(), RenderPosition.BEFOREEND);
 
 const tripEventsListHandler = document.querySelector('.trip-events__list');
 
