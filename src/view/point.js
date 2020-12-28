@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 
-import {MINUTES_IN_HOUR, HOURS_IN_DAY} from '../utils/const';
-import {createElement} from '../utils/utils';
+import {MINUTES_IN_HOUR, HOURS_IN_DAY} from '../const';
+import {createElement} from '../utils';
 
 function createOffersTemplate(offers) {
   let template = '';
@@ -77,7 +77,7 @@ function createTripPoint(point) {
 export default class Point {
   constructor(point) {
     this._point = point;
-    this._elelement = point;
+    this._elelement = null;
   }
 
   getTemplate() {

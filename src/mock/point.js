@@ -1,4 +1,4 @@
-import { getRandomInteger, getRandomType, getRandomCity, getRandomDescription, getRandomOffers, getRandomPrice, getRandomImages, getRandomDates } from '../utils/tools';
+import {getRandomInteger, getRandomType, getRandomCity, getRandomDescription, getRandomOffers, getRandomPrice, getRandomImages, getRandomDates} from '../utils/tools';
 
 export function generateTripPoint() {
   const type = getRandomType();

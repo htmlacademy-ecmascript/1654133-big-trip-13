@@ -1,5 +1,5 @@
-import {TRIP_POINT_TYPES} from '../utils/const';
-import {createElement} from '../utils/utils';
+import {TRIP_POINT_TYPES} from '../const';
+import {createElement} from '../utils';
 
 function createEventTypes() {
   return `<div class="event__type-list">

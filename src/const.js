@@ -55,6 +55,4 @@ export const OFFERS = {
   'Check-in': ['Add breakfast', 'Early check-in', 'Late check-out'],
   'Sightseeing': ['Book tickets', 'Lunch in city', 'Buy souvenirs', 'Take a tour guide'],
   'Restaurant': ['Order Uber', 'Add wine', 'Take a music band'],
-};
-
-
+}

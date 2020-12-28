@@ -1,4 +1,4 @@
-import {createElement} from '../utils/utils';
+import {createElement} from '../utils';
 
 function createTripInfoTitle(title) {
     return `<h1 class="trip-info__title">${title}</h1>`;
@@ -7,7 +7,7 @@ function createTripInfoTitle(title) {
 export default class InfoTitle {
   constructor(title) {
     this._title = title;
-    this._element = title;
+    this._element = null;
   }
 
   getTemplate() {

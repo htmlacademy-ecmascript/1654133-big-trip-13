@@ -1,20 +1,20 @@
 import dayjs from 'dayjs';
 
 import EventTypes from './event-types';
-import {CITIES} from '../utils/const';
+import {CITIES} from '../const';
 import {getId} from '../utils/tools';
-import {createElement} from '../utils/utils';
+import {createElement} from '../utils';
 
 function createOffersTemplate(offers) {
   if (Object.keys(offers).length === 0) {
     return ``;
-  };
+  }
 
-  let template = '';
+  let template = ``;
 
   for (const offer in offers) {
     const offerId = getId();
-    const price = offers[offer]
+    const price = offers[offer];
     template += `<div class="event__offer-selector">
     <input class="event__offer-checkbox  visually-hidden" id="event-offer-${offerId}" type="checkbox" name="event-offer-${offerId}" checked>
     <label class="event__offer-label" for="event-offer-${offerId}">
@@ -23,18 +23,18 @@ function createOffersTemplate(offers) {
         <span class="event__offer-price">${price}</span>
     </label>
     </div>`;
-  };
+  }
 
   return `<section class="event__section  event__section--offers">
   <h3 class="event__section-title  event__section-title--offers">Offers</h3>
   <div class="event__available-offers">${template}</div>
   </section>`;
-};
+}
 
 function createAddNewPoint(point) {
   const {city, description, images, offers, dates} = point;
-  const startDate = dayjs(dates[0]).format('DD/MM/YY HH:mm');
-  const endDate = dayjs(dates[1]).format('DD/MM/YY HH:mm');
+  const startDate = dayjs(dates[0]).format(`DD/MM/YY HH:mm`);
+  const endDate = dayjs(dates[1]).format(`DD/MM/YY HH:mm`);
 
   return `<li class="trip-events__item">
     <form class="event event--edit" action="#" method="post">
@@ -54,7 +54,7 @@ function createAddNewPoint(point) {
           </label>
           <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${city}" list="destination-list-1">
           <datalist id="destination-list-1">
-              ${CITIES.map(city => `<option value="${city}"></option>`)}
+              ${CITIES.map((value) => `<option value="${value}"></option>`)}
           </datalist>
         </div>
 
@@ -86,7 +86,7 @@ function createAddNewPoint(point) {
 
           <div class="event__photos-container">
             <div class="event__photos-tape">
-            ${images.map(image => `<img class="event__photo" src="${image}" alt="Event photo">`)}
+            ${images.map((image) => `<img class="event__photo" src="${image}" alt="Event photo">`)}
             </div>
           </div>
         </section>

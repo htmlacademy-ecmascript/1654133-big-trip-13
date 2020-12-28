@@ -1,4 +1,4 @@
-import {createElement} from '../utils/utils';
+import {createElement} from '../utils';
 
 function createTripEventsList() {
   return `<ul class="trip-events__list">

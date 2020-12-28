@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 
-import {createElement} from '../utils/utils';
+import {createElement} from '../utils';
 
 function createTripFilters() {
   return `

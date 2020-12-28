@@ -1,4 +1,4 @@
-import {createElement} from '../utils/utils';
+import {createElement} from '../utils';
 
 function createTripInfoDate(dateRange) {
     return `<p class="trip-info__dates">${dateRange}</p>`;

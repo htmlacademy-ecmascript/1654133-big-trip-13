@@ -4,7 +4,7 @@ import InfoTitle from './info-title';
 import InfoDate from './info-date';
 import Cost from './cost';
 
-import {createElement} from '../utils/utils';
+import {createElement} from '../utils';
 
 function createTripInfo(tripPoints) {
   const firstPoint = tripPoints[0];
