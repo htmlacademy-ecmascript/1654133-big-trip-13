@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 
-import { MINUTES_IN_HOUR, HOURS_IN_DAY } from '../utils/const';
+import {MINUTES_IN_HOUR, HOURS_IN_DAY} from '../const';
+import {createElement} from '../utils';
 
 function createOffersTemplate(offers) {
   let template = '';
@@ -16,7 +17,7 @@ function createOffersTemplate(offers) {
   return template;
 };
 
-export function createTripPoint(point) {
+function createTripPoint(point) {
   const {type, city, price, isFavorite, dates, offers} = point;
 
   let duration = dayjs(dates[1]).diff(dayjs(dates[0]), 'hour');
@@ -71,4 +72,27 @@ export function createTripPoint(point) {
       </button>
       </div>
   </li>`;
+}
+
+export default class Point {
+  constructor(point) {
+    this._point = point;
+    this._elelement = null;
+  }
+
+  getTemplate() {
+    return createTripPoint(this._point);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
 }

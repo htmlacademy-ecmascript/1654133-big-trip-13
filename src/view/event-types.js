@@ -1,6 +1,7 @@
-import { TRIP_POINT_TYPES } from '../utils/const';
+import {TRIP_POINT_TYPES} from '../const';
+import {createElement} from '../utils';
 
-export function createEventTypes() {
+function createEventTypes() {
   return `<div class="event__type-list">
     <fieldset class="event__type-group">
     <legend class="visually-hidden">Event type</legend>
@@ -12,4 +13,26 @@ export function createEventTypes() {
         </div>`}).join(``)}
     </fieldset>
   </div>`;
+}
+
+export default class EventTypes {
+  constructor() {
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createEventTypes();
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
 }
