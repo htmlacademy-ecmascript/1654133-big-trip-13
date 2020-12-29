@@ -6,7 +6,7 @@ import Events from './view/events';
 import Point from './view/point';
 import EditPoint from './view/edit-point';
 import {generateTripPoint} from './mock/point';
-import {render, RenderPosition} from './utils';
+import {render, RenderPosition} from './utils/render';
 
 const TRIP_POINTS = 20;
 const tripPoints = new Array(TRIP_POINTS).fill().map(generateTripPoint);
