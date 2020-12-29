@@ -1,5 +1,6 @@
+import AbstractView from './abstract';
+
 import {TRIP_POINT_TYPES} from '../const';
-import {createElement} from '../utils';
 
 function createEventTypes() {
   return `<div class="event__type-list">
@@ -15,24 +16,8 @@ function createEventTypes() {
   </div>`;
 }
 
-export default class EventTypes {
-  constructor() {
-    this._element = null;
-  }
-
+export default class EventTypes extends AbstractView{
   getTemplate() {
     return createEventTypes();
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

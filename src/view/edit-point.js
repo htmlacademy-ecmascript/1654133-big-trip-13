@@ -1,8 +1,9 @@
 import dayjs from 'dayjs';
 
+import AbstractView from './abstract';
+
 import {CITIES} from '../const';
 import {getId} from '../utils/tools';
-import {createElement} from '../utils';
 
 import EventTypes from './event-types';
 
@@ -95,25 +96,14 @@ function createEditPoint(point) {
     </li>`;
 }
 
-export default class EditPoint {
+export default class EditPoint extends AbstractView{
   constructor(point) {
+    super();
+
     this._point = point;
-    this._element = null;
   }
 
   getTemplate() {
     return createEditPoint(this._point);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

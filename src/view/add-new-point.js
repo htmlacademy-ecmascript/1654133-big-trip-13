@@ -1,9 +1,9 @@
 import dayjs from 'dayjs';
 
+import AbstractView from './abstract';
 import EventTypes from './event-types';
 import {CITIES} from '../const';
 import {getId} from '../utils/tools';
-import {createElement} from '../utils';
 
 function createOffersTemplate(offers) {
   if (Object.keys(offers).length === 0) {
@@ -95,25 +95,13 @@ function createAddNewPoint(point) {
   </li>`;
 }
 
-export default class AddNewPoint {
+export default class AddNewPoint extends AbstractView {
   constructor(point) {
+    super();
     this._point = point;
-    this._element = null;
   }
 
   getTemplate() {
     return createAddNewPoint(this._point);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

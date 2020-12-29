@@ -1,10 +1,7 @@
-import dayjs from "dayjs";
-
-import {createElement} from '../utils';
+import AbstractView from './abstract';
 
 function createTripFilters() {
-  return `
-    <form class="trip-filters" action="#" method="get">
+  return `<form class="trip-filters" action="#" method="get">
       <div class="trip-filters__filter">
         <input id="filter-everything" class="trip-filters__filter-input  visually-hidden" type="radio" name="trip-filter" value="everything" checked>
         <label class="trip-filters__filter-label" for="filter-everything">Everything</label>
@@ -24,24 +21,8 @@ function createTripFilters() {
     </form>`;
 }
 
-export default class Filters {
-  constructor() {
-    this._element = null;
-  }
-
+export default class Filters extends AbstractView{
   getTemplate() {
     return createTripFilters();
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

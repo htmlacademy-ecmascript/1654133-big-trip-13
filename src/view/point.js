@@ -1,7 +1,8 @@
 import dayjs from 'dayjs';
 
+import AbstractView from './abstract';
+
 import {MINUTES_IN_HOUR, HOURS_IN_DAY} from '../const';
-import {createElement} from '../utils';
 
 function createOffersTemplate(offers) {
   let template = '';
@@ -74,25 +75,14 @@ function createTripPoint(point) {
   </li>`;
 }
 
-export default class Point {
+export default class Point extends AbstractView {
   constructor(point) {
+    super();
+
     this._point = point;
-    this._elelement = null;
   }
 
   getTemplate() {
     return createTripPoint(this._point);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

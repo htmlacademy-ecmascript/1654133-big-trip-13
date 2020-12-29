@@ -1,10 +1,10 @@
 import dayjs from 'dayjs';
 
+import AbstractView from './abstract';
+
 import InfoTitle from './info-title';
 import InfoDate from './info-date';
 import Cost from './cost';
-
-import {createElement} from '../utils';
 
 function createTripInfo(tripPoints) {
   const firstPoint = tripPoints[0];
@@ -34,25 +34,14 @@ function createTripInfo(tripPoints) {
   </section>`;
 }
 
-export default class TripInfo {
+export default class TripInfo extends AbstractView{
   constructor(points) {
+    super();
+
     this._points = points;
-    this._element = null;
   }
 
   getTemplate() {
     return createTripInfo(this._points);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
