@@ -1,10 +1,10 @@
 import AbstractView from './abstract';
 
 function createTripInfoTitle(title) {
-    return `<h1 class="trip-info__title">${title}</h1>`;
+  return `<h1 class="trip-info__title">${title}</h1>`;
 }
 
-export default class InfoTitle extends AbstractView{
+export default class InfoTitle extends AbstractView {
   constructor(title) {
     super();
 

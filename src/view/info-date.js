@@ -1,10 +1,10 @@
 import AbstractView from './abstract';
 
 function createTripInfoDate(dateRange) {
-    return `<p class="trip-info__dates">${dateRange}</p>`;
+  return `<p class="trip-info__dates">${dateRange}</p>`;
 }
 
-export default class InfoDate extends AbstractView{
+export default class InfoDate extends AbstractView {
   constructor(dateRange) {
     super();
 

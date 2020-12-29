@@ -29,7 +29,7 @@ function createTripEventsSortForm() {
     </form>`;
 }
 
-export default class EventsSortForm extends AbstractView{
+export default class EventsSortForm extends AbstractView {
   getTemplate() {
     return createTripEventsSortForm();
   }

@@ -5,53 +5,53 @@ import AbstractView from './abstract';
 import {MINUTES_IN_HOUR, HOURS_IN_DAY} from '../const';
 
 function createOffersTemplate(offers) {
-  let template = '';
+  let template = ``;
 
-  for (const offer in offers) {
+  for (const offer of Object.getOwnPropertyNames(offers)) {
     template += `<li class="event__offer">
     <span class="event__offer-title">${offer}</span>
     &plus;&euro;&nbsp;
     <span class="event__offer-price">${offers[offer]}</span>
     </li>`;
-  };
+  }
 
   return template;
-};
+}
 
 function createTripPoint(point) {
   const {type, city, price, isFavorite, dates, offers} = point;
 
-  let duration = dayjs(dates[1]).diff(dayjs(dates[0]), 'hour');
+  let duration = dayjs(dates[1]).diff(dayjs(dates[0]), `hour`);
 
   if (duration < 1) {
-    const minutes = dayjs(dates[1]).diff(dayjs(dates[0]), 'minute');
+    const minutes = dayjs(dates[1]).diff(dayjs(dates[0]), `minute`);
 
     duration = `${minutes}M`;
   } else if (duration < 24) {
-    const minutes = dayjs(dates[1]).diff(dayjs(dates[0]), 'minute') % MINUTES_IN_HOUR;
-    const hours = dayjs(dates[1]).diff(dayjs(dates[0]), 'hour');
+    const minutes = dayjs(dates[1]).diff(dayjs(dates[0]), `minute`) % MINUTES_IN_HOUR;
+    const hours = dayjs(dates[1]).diff(dayjs(dates[0]), `hour`);
 
     duration = `${hours}H ${minutes}M`;
   } else {
-    const minutes = dayjs(dates[1]).diff(dayjs(dates[0]), 'minute') % MINUTES_IN_HOUR;
-    const hours = dayjs(dates[1]).diff(dayjs(dates[0]), 'hour') % HOURS_IN_DAY;
-    const days = dayjs(dates[1]).diff(dayjs(dates[0]), 'day');
+    const minutes = dayjs(dates[1]).diff(dayjs(dates[0]), `minute`) % MINUTES_IN_HOUR;
+    const hours = dayjs(dates[1]).diff(dayjs(dates[0]), `hour`) % HOURS_IN_DAY;
+    const days = dayjs(dates[1]).diff(dayjs(dates[0]), `day`);
 
     duration = `${days}D ${hours}H ${minutes}M`;
-  };
+  }
 
   return `<li class="trip-events__item">
       <div class="event">
-      <time class="event__date" datetime="${dayjs(dates[0]).format('YYYY-MM-DD')}">${dayjs(dates[0]).format('MMM D')}</time>
+      <time class="event__date" datetime="${dayjs(dates[0]).format(`YYYY-MM-DD`)}">${dayjs(dates[0]).format(`MMM D`)}</time>
       <div class="event__type">
           <img class="event__type-icon" width="42" height="42" src="img/icons/${type}.png" alt="Event type icon">
       </div>
       <h3 class="event__title">${type} ${city}</h3>
       <div class="event__schedule">
           <p class="event__time">
-          <time class="event__start-time" datetime="${dayjs(dates[0]).format('YYYY-MM-DDTHH:mm')}">${dayjs(dates[0]).format('HH:mm')}</time>
+          <time class="event__start-time" datetime="${dayjs(dates[0]).format(`YYYY-MM-DDTHH:mm`)}">${dayjs(dates[0]).format(`HH:mm`)}</time>
           &mdash;
-          <time class="event__end-time" datetime="${dayjs(dates[0]).format('YYYY-MM-DDTHH:mm')}">${dayjs(dates[1]).format('HH:mm')}</time>
+          <time class="event__end-time" datetime="${dayjs(dates[0]).format(`YYYY-MM-DDTHH:mm`)}">${dayjs(dates[1]).format(`HH:mm`)}</time>
           </p>
           <p class="event__duration">${duration}</p>
       </div>

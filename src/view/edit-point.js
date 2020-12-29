@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 import AbstractView from './abstract';
 
 import {CITIES} from '../const';
-import {getId} from '../utils/tools';
+import {nanoid} from 'nanoid';
 
 import EventTypes from './event-types';
 
@@ -14,8 +14,8 @@ function createOffersTemplate(offers) {
 
   let template = ``;
 
-  for (const offer in offers) {
-    const offerId = getId();
+  for (const offer of Object.getOwnPropertyNames(offers)) {
+    const offerId = nanoid();
     const price = offers[offer];
     template += `<div class="event__offer-selector">
     <input class="event__offer-checkbox  visually-hidden" id="event-offer-${offerId}" type="checkbox" name="event-offer-${offerId}" checked>
@@ -86,17 +86,18 @@ function createEditPoint(point) {
         <section class="event__details">
           ${createOffersTemplate(offers)}
 
-          ${description.length !== 0 ?
-          `<section class="event__section  event__section--destination">
-          <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-          <p class="event__destination-description">${description}</p>
-          </section>` : ``}
+          ${description.length !== 0 
+            ? `<section class="event__section  event__section--destination">
+                <h3 class="event__section-title  event__section-title--destination">Destination</h3>
+                <p class="event__destination-description">${description}</p>
+              </section>` 
+            : ``}
         </section>
       </form>
     </li>`;
 }
 
-export default class EditPoint extends AbstractView{
+export default class EditPoint extends AbstractView {
   constructor(point) {
     super();
 

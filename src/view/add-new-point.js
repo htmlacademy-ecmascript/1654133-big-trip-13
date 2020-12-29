@@ -12,7 +12,7 @@ function createOffersTemplate(offers) {
 
   let template = ``;
 
-  for (const offer in offers) {
+  for (const offer of Object.getOwnPropertyNames(offers)) {
     const offerId = getId();
     const price = offers[offer];
     template += `<div class="event__offer-selector">
