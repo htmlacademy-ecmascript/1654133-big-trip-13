@@ -26,23 +26,17 @@ const renderPoint = (container, point) => {
     container.replaceChild(pointComponent.getElement(), pointEditComponent.getElement());
   }
 
-  pointComponent.getElement()
-    .querySelector(`.event__rollup-btn`)
-    .addEventListener(`click`, () => {
-      replacePointToForm();
+  pointComponent.setEditClickHandler(() => {
+    replacePointToForm();
   });
 
-  pointEditComponent.getElement()
-    .querySelector(`form`)
-    .addEventListener(`submit`, () => {
-      replaceFormToPoint();
-    });
+  pointEditComponent.setSubmitFormClick(() => {
+    replaceFormToPoint();
+  });
 
-  pointEditComponent.getElement()
-    .querySelector(`.event__rollup-btn`)
-    .addEventListener(`click`, () => {
-      replaceFormToPoint();
-    });
+  pointEditComponent.setCloseFormClick(() => {
+    replaceFormToPoint();
+  });
 
   render(container, pointComponent.getElement(), RenderPosition.BEFOREEND);
 }
