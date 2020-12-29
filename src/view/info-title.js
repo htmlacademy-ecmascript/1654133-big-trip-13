@@ -1,28 +1,17 @@
-import {createElement} from '../utils';
+import AbstractView from './abstract';
 
 function createTripInfoTitle(title) {
-    return `<h1 class="trip-info__title">${title}</h1>`;
+  return `<h1 class="trip-info__title">${title}</h1>`;
 }
 
-export default class InfoTitle {
+export default class InfoTitle extends AbstractView {
   constructor(title) {
+    super();
+
     this._title = title;
-    this._element = null;
   }
 
   getTemplate() {
     return createTripInfoTitle(this._title);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

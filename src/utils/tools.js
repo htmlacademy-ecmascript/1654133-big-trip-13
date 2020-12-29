@@ -2,10 +2,6 @@ import dayjs from 'dayjs';
 
 import {TRIP_POINT_TYPES, CITIES, DESCRIPTION, OFFERS} from '../const';
 
-export function getId(t = 21) {
-  let e="",r=crypto.getRandomValues(new Uint8Array(t));for(;t--;){let n=63&r[t];e+=n<36?n.toString(36):n<62?(n-26).toString(36).toUpperCase():n<63?"_":"-"}return e;
-}
-
 export function getRandomInteger(a = 0, b = 1) {
   const lower = Math.ceil(Math.min(a, b));
   const upper = Math.floor(Math.max(a, b));

@@ -1,8 +1,9 @@
 import dayjs from 'dayjs';
 
+import AbstractView from './abstract';
+
 import {CITIES} from '../const';
-import {getId} from '../utils/tools';
-import {createElement} from '../utils';
+import {nanoid} from 'nanoid';
 
 import EventTypes from './event-types';
 
@@ -13,8 +14,8 @@ function createOffersTemplate(offers) {
 
   let template = ``;
 
-  for (const offer in offers) {
-    const offerId = getId();
+  for (const offer of Object.getOwnPropertyNames(offers)) {
+    const offerId = nanoid();
     const price = offers[offer];
     template += `<div class="event__offer-selector">
     <input class="event__offer-checkbox  visually-hidden" id="event-offer-${offerId}" type="checkbox" name="event-offer-${offerId}" checked>
@@ -83,37 +84,53 @@ function createEditPoint(point) {
           </button>
         </header>
         <section class="event__details">
-          ${createOffersTemplate(offers)}
+  ${createOffersTemplate(offers)}
 
-          ${description.length !== 0 ?
-          `<section class="event__section  event__section--destination">
-          <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-          <p class="event__destination-description">${description}</p>
-          </section>` : ``}
+  ${description.length !== 0
+    ? `<section class="event__section  event__section--destination">
+        <h3 class="event__section-title  event__section-title--destination">Destination</h3>
+        <p class="event__destination-description">${description}</p>
+      </section>`
+    : ``}
         </section>
       </form>
     </li>`;
 }
 
-export default class EditPoint {
+export default class EditPoint extends AbstractView {
   constructor(point) {
+    super();
+
     this._point = point;
-    this._element = null;
+    this._submitFormHandler = this._submitFormHandler.bind(this);
+    this._closeFormHandler = this._closeFormHandler.bind(this);
   }
 
   getTemplate() {
     return createEditPoint(this._point);
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
+  _submitFormHandler(evt) {
+    evt.preventDefault();
+    this._callback.submitFormClick();
   }
 
-  removeElement() {
-    this._element = null;
+  _closeFormHandler(evt) {
+    evt.preventDefault();
+    this._callback.closeFormClick();
+  }
+
+  setSubmitFormClick(callback) {
+    this._callback.submitFormClick = callback;
+    this.getElement()
+      .querySelector(`form`)
+      .addEventListener(`submit`, this._submitFormHandler);
+  }
+
+  setCloseFormClick(callback) {
+    this._callback.closeFormClick = callback;
+    this.getElement()
+      .querySelector(`.event__rollup-btn`)
+      .addEventListener(`click`, this._closeFormHandler);
   }
 }

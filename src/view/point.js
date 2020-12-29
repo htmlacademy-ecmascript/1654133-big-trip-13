@@ -1,56 +1,57 @@
 import dayjs from 'dayjs';
 
+import AbstractView from './abstract';
+
 import {MINUTES_IN_HOUR, HOURS_IN_DAY} from '../const';
-import {createElement} from '../utils';
 
 function createOffersTemplate(offers) {
-  let template = '';
+  let template = ``;
 
-  for (const offer in offers) {
+  for (const offer of Object.getOwnPropertyNames(offers)) {
     template += `<li class="event__offer">
     <span class="event__offer-title">${offer}</span>
     &plus;&euro;&nbsp;
     <span class="event__offer-price">${offers[offer]}</span>
     </li>`;
-  };
+  }
 
   return template;
-};
+}
 
 function createTripPoint(point) {
   const {type, city, price, isFavorite, dates, offers} = point;
 
-  let duration = dayjs(dates[1]).diff(dayjs(dates[0]), 'hour');
+  let duration = dayjs(dates[1]).diff(dayjs(dates[0]), `hour`);
 
   if (duration < 1) {
-    const minutes = dayjs(dates[1]).diff(dayjs(dates[0]), 'minute');
+    const minutes = dayjs(dates[1]).diff(dayjs(dates[0]), `minute`);
 
     duration = `${minutes}M`;
   } else if (duration < 24) {
-    const minutes = dayjs(dates[1]).diff(dayjs(dates[0]), 'minute') % MINUTES_IN_HOUR;
-    const hours = dayjs(dates[1]).diff(dayjs(dates[0]), 'hour');
+    const minutes = dayjs(dates[1]).diff(dayjs(dates[0]), `minute`) % MINUTES_IN_HOUR;
+    const hours = dayjs(dates[1]).diff(dayjs(dates[0]), `hour`);
 
     duration = `${hours}H ${minutes}M`;
   } else {
-    const minutes = dayjs(dates[1]).diff(dayjs(dates[0]), 'minute') % MINUTES_IN_HOUR;
-    const hours = dayjs(dates[1]).diff(dayjs(dates[0]), 'hour') % HOURS_IN_DAY;
-    const days = dayjs(dates[1]).diff(dayjs(dates[0]), 'day');
+    const minutes = dayjs(dates[1]).diff(dayjs(dates[0]), `minute`) % MINUTES_IN_HOUR;
+    const hours = dayjs(dates[1]).diff(dayjs(dates[0]), `hour`) % HOURS_IN_DAY;
+    const days = dayjs(dates[1]).diff(dayjs(dates[0]), `day`);
 
     duration = `${days}D ${hours}H ${minutes}M`;
-  };
+  }
 
   return `<li class="trip-events__item">
       <div class="event">
-      <time class="event__date" datetime="${dayjs(dates[0]).format('YYYY-MM-DD')}">${dayjs(dates[0]).format('MMM D')}</time>
+      <time class="event__date" datetime="${dayjs(dates[0]).format(`YYYY-MM-DD`)}">${dayjs(dates[0]).format(`MMM D`)}</time>
       <div class="event__type">
           <img class="event__type-icon" width="42" height="42" src="img/icons/${type}.png" alt="Event type icon">
       </div>
       <h3 class="event__title">${type} ${city}</h3>
       <div class="event__schedule">
           <p class="event__time">
-          <time class="event__start-time" datetime="${dayjs(dates[0]).format('YYYY-MM-DDTHH:mm')}">${dayjs(dates[0]).format('HH:mm')}</time>
+          <time class="event__start-time" datetime="${dayjs(dates[0]).format(`YYYY-MM-DDTHH:mm`)}">${dayjs(dates[0]).format(`HH:mm`)}</time>
           &mdash;
-          <time class="event__end-time" datetime="${dayjs(dates[0]).format('YYYY-MM-DDTHH:mm')}">${dayjs(dates[1]).format('HH:mm')}</time>
+          <time class="event__end-time" datetime="${dayjs(dates[0]).format(`YYYY-MM-DDTHH:mm`)}">${dayjs(dates[1]).format(`HH:mm`)}</time>
           </p>
           <p class="event__duration">${duration}</p>
       </div>
@@ -61,7 +62,7 @@ function createTripPoint(point) {
       <ul class="event__selected-offers">
           ${createOffersTemplate(offers)}
       </ul>
-      <button class="event__favorite-btn ${isFavorite ? 'event__favorite-btn--active' : ''}" type="button">
+      <button class="event__favorite-btn ${isFavorite ? `event__favorite-btn--active` : ``}" type="button">
           <span class="visually-hidden">Add to favorite</span>
           <svg class="event__favorite-icon" width="28" height="28" viewBox="0 0 28 28">
           <path d="M14 21l-8.22899 4.3262 1.57159-9.1631L.685209 9.67376 9.8855 8.33688 14 0l4.1145 8.33688 9.2003 1.33688-6.6574 6.48934 1.5716 9.1631L14 21z"/>
@@ -74,25 +75,27 @@ function createTripPoint(point) {
   </li>`;
 }
 
-export default class Point {
+export default class Point extends AbstractView {
   constructor(point) {
+    super();
+
     this._point = point;
-    this._elelement = null;
+    this._editClickHandler = this._editClickHandler.bind(this);
   }
 
   getTemplate() {
     return createTripPoint(this._point);
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
+  _editClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.editClick();
   }
 
-  removeElement() {
-    this._element = null;
+  setEditClickHandler(callback) {
+    this._callback.editClick = callback;
+    this.getElement()
+      .querySelector(`.event__rollup-btn`)
+      .addEventListener(`click`, this._editClickHandler);
   }
 }
