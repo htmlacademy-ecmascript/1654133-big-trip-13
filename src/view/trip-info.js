@@ -34,7 +34,7 @@ function createTripInfo(tripPoints) {
   </section>`;
 }
 
-export default class TripInfo extends AbstractView{
+export default class TripInfo extends AbstractView {
   constructor(points) {
     super();
 

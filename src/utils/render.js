@@ -3,7 +3,7 @@ import Abstract from '../view/abstract';
 export const RenderPosition = {
   AFTERBEGIN: `afterbegin`,
   BEFOREEND: `beforeend`,
-}
+};
 
 export const render = (container, child, place) => {
   container = container instanceof Abstract ? container.getElement() : container;

@@ -21,7 +21,7 @@ function createTripFilters() {
     </form>`;
 }
 
-export default class Filters extends AbstractView{
+export default class Filters extends AbstractView {
   getTemplate() {
     return createTripFilters();
   }
