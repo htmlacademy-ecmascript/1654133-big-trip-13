@@ -8,7 +8,7 @@ export const RenderPosition = {
 export const render = (container, child, place) => {
   container = container instanceof Abstract ? container.getElement() : container;
   child = child instanceof Abstract ? child.getElement() : child;
-  
+
   switch (place) {
     case RenderPosition.AFTERBEGIN:
       container.prepend(child);

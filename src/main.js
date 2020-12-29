@@ -10,7 +10,7 @@ import {render, RenderPosition, replace} from './utils/render';
 
 const TRIP_POINTS = 20;
 const tripPoints = new Array(TRIP_POINTS).fill().map(generateTripPoint);
-tripPoints.sort(function(a,b) {
+tripPoints.sort((a, b) => {
   return a.dates[0] - b.dates[0];
 });
 
@@ -20,11 +20,11 @@ const renderPoint = (container, point) => {
 
   const replacePointToForm = () => {
     replace(pointEditComponent, pointComponent);
-  }
+  };
 
   const replaceFormToPoint = () => {
     replace(pointComponent, pointEditComponent);
-  }
+  };
 
   pointComponent.setEditClickHandler(() => {
     replacePointToForm();
@@ -39,20 +39,20 @@ const renderPoint = (container, point) => {
   });
 
   render(container, pointComponent, RenderPosition.BEFOREEND);
-}
+};
 
-const tripMainHandler = document.querySelector('.trip-main');
-const tripControlsHandler = tripMainHandler.querySelector('.trip-controls');
-const tripSwitchesHandler = tripControlsHandler.querySelector('.visually-hidden');
+const tripMainHandler = document.querySelector(`.trip-main`);
+const tripControlsHandler = tripMainHandler.querySelector(`.trip-controls`);
+const tripSwitchesHandler = tripControlsHandler.querySelector(`.visually-hidden`);
 render(tripMainHandler, new TripInfo(tripPoints), RenderPosition.AFTERBEGIN);
 render(tripSwitchesHandler, new Switches(), RenderPosition.AFTERBEGIN);
 render(tripControlsHandler, new Filters(), RenderPosition.BEFOREEND);
 
-const tripEventsHandler = document.querySelector('.trip-events');
+const tripEventsHandler = document.querySelector(`.trip-events`);
 render(tripEventsHandler, new EventsSortForm(), RenderPosition.BEFOREEND);
 render(tripEventsHandler, new Events(), RenderPosition.BEFOREEND);
 
-const tripEventsListHandler = document.querySelector('.trip-events__list');
+const tripEventsListHandler = document.querySelector(`.trip-events__list`);
 
 for (const point of tripPoints) {
   renderPoint(tripEventsListHandler, point);
