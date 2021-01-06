@@ -6,7 +6,7 @@ function createEventTypes() {
   return `<div class="event__type-list">
     <fieldset class="event__type-group">
     <legend class="visually-hidden">Event type</legend>
-    ${{TRIP_POINT_TYPES}
+    ${TRIP_POINT_TYPES
       .map((type) => {
         const typeLowerCase = type.toLowerCase();
 
