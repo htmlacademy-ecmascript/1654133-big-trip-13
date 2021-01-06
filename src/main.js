@@ -10,40 +10,7 @@ tripPoints.sort((a, b) => {
   return a.dates[0] - b.dates[0];
 });
 
-const renderPoint = (container, point) => {
-  const pointComponent = new Point(point);
-  const pointEditComponent = new EditPoint(point);
-
-  const replacePointToForm = () => {
-    replace(pointEditComponent, pointComponent);
-  };
-
-  const replaceFormToPoint = () => {
-    replace(pointComponent, pointEditComponent);
-  };
-
-  pointComponent.setEditClickHandler(() => {
-    replacePointToForm();
-  });
-
-  pointEditComponent.setSubmitFormClick(() => {
-    replaceFormToPoint();
-  });
-
-  pointEditComponent.setCloseFormClick(() => {
-    replaceFormToPoint();
-  });
-
-  render(container, pointComponent, RenderPosition.BEFOREEND);
-};
-
 const tripMainHandler = document.querySelector(`.trip-main`);
 
 const tripPresenter = new TripPresenter(tripMainHandler);
 tripPresenter.init(tripPoints);
-
-const tripEventsListHandler = document.querySelector(`.trip-events__list`);
-
-for (const point of tripPoints) {
-  renderPoint(tripEventsListHandler, point);
-}

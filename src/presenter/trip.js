@@ -3,16 +3,19 @@ import SwitchesView from '../view/switches';
 import FiltersView from '../view/filters';
 import EventsSortFormView from '../view/events-sort-form';
 import EventsView from '../view/events';
+import PointPresenter from '../presenter/point';
 import {render, RenderPosition} from '../utils/render';
 
 
 export default class Trip {
   constructor(tripContainer) {
     this._tripContainer = tripContainer;
+    this._pointPresenter = [];
 
     this._tripControlsHandler = tripContainer.querySelector(`.trip-controls`);
     this._tripSwitchesHandler = this._tripControlsHandler.querySelector(`.visually-hidden`);
     this._tripEventsHandler = document.querySelector(`.trip-events`);
+    this._tripEventsListHandler = document.querySelector(`.trip-events__list`);
   }
 
   init(tripPoints) {
@@ -23,5 +26,19 @@ export default class Trip {
     render(this._tripControlsHandler, new FiltersView(), RenderPosition.BEFOREEND);
     render(this._tripEventsHandler, new EventsSortFormView(), RenderPosition.BEFOREEND);
     render(this._tripEventsHandler, new EventsView(), RenderPosition.BEFOREEND);
+
+    this._tripEventsListHandler = document.querySelector(`.trip-events__list`);
+
+    this._renderPoints();
+  }
+
+  _renderPoint(point) {
+    const pointPresenter = new PointPresenter(this._tripEventsListHandler);
+    pointPresenter.init(point);
+    this._pointPresenter.push(pointPresenter);
+  }
+
+  _renderPoints() {
+    this._tripPoints.forEach((point) => this._renderPoint(point));
   }
 }
