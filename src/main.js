@@ -1,10 +1,6 @@
-import TripInfo from './view/trip-info';
-import Switches from './view/switches';
-import Filters from './view/filters';
-import EventsSortForm from './view/events-sort-form';
-import Events from './view/events';
 import Point from './view/point';
 import EditPoint from './view/edit-point';
+import TripPresenter from './presenter/trip';
 import {generateTripPoint} from './mock/point';
 import {render, RenderPosition, replace} from './utils/render';
 
@@ -42,15 +38,9 @@ const renderPoint = (container, point) => {
 };
 
 const tripMainHandler = document.querySelector(`.trip-main`);
-const tripControlsHandler = tripMainHandler.querySelector(`.trip-controls`);
-const tripSwitchesHandler = tripControlsHandler.querySelector(`.visually-hidden`);
-render(tripMainHandler, new TripInfo(tripPoints), RenderPosition.AFTERBEGIN);
-render(tripSwitchesHandler, new Switches(), RenderPosition.AFTERBEGIN);
-render(tripControlsHandler, new Filters(), RenderPosition.BEFOREEND);
 
-const tripEventsHandler = document.querySelector(`.trip-events`);
-render(tripEventsHandler, new EventsSortForm(), RenderPosition.BEFOREEND);
-render(tripEventsHandler, new Events(), RenderPosition.BEFOREEND);
+const tripPresenter = new TripPresenter(tripMainHandler);
+tripPresenter.init(tripPoints);
 
 const tripEventsListHandler = document.querySelector(`.trip-events__list`);
 
