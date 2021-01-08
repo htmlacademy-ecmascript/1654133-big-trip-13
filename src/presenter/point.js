@@ -1,6 +1,6 @@
 import PointView from '../view/point';
 import EditPointView from '../view/edit-point';
-import {render, replace, RenderPosition} from '../utils/render';
+import {render, replace, remove, RenderPosition} from '../utils/render';
 
 const Mode = {
   DEFAULT: `DEFAULT`,
@@ -8,9 +8,10 @@ const Mode = {
 };
 
 export default class Point {
-  constructor(pointListContainer, changeMode) {
+  constructor(pointListContainer, changeMode, changeData) {
     this._pointListContainer = pointListContainer;
     this._changeMode = changeMode;
+    this._changeData = changeData;
 
     this._pointComponent = null;
     this._pointEditComponent = null;
@@ -19,10 +20,14 @@ export default class Point {
     this._handleFormSubmit = this._handleFormSubmit.bind(this);
     this._handleEditClick = this._handleEditClick.bind(this);
     this._handleCloseFormClick = this._handleCloseFormClick.bind(this);
+    this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
   }
 
   init(point) {
     this._point = point;
+
+    const prevPointComponent = this._pointComponent;
+    const prevPointEditComponent = this._pointEditComponent;
 
     this._pointComponent = new PointView(point);
     this._pointEditComponent = new EditPointView(point);
@@ -30,13 +35,29 @@ export default class Point {
     this._pointComponent.setEditClickHandler(this._handleEditClick);
     this._pointEditComponent.setSubmitFormClick(this._handleFormSubmit);
     this._pointEditComponent.setCloseFormClick(this._handleCloseFormClick);
+    this._pointComponent.setFavoriteClickHandler(this._handleFavoriteClick);
 
-    render(this._pointListContainer, this._pointComponent, RenderPosition.BEFOREEND);
+    if (prevPointComponent === null || prevPointEditComponent === null) {
+      render(this._pointListContainer, this._pointComponent, RenderPosition.BEFOREEND);
+      return;
+    }
+
+    this._replaceIfExist(this._pointComponent, prevPointComponent);
+    this._replaceIfExist(this._pointEditComponent, prevPointEditComponent);
+
+    remove(prevPointComponent);
+    remove(prevPointEditComponent);
   }
 
   resetView() {
     if (this._mode !== Mode.DEFAULT) {
       this._replaceFormToPoint();
+    }
+  }
+
+  _replaceIfExist(newComponent, oldComponent) {
+    if (this._pointListContainer.getElement().contains(oldComponent.getElement())) {
+      replace(newComponent, oldComponent);
     }
   }
 
@@ -61,5 +82,9 @@ export default class Point {
 
   _handleCloseFormClick() {
     this._replaceFormToPoint();
+  }
+
+  _handleFavoriteClick() {
+    this._changeData(Object.assign({}, this._point, {isFavorite: !this._point.isFavorite}));
   }
 }

@@ -1,49 +1,44 @@
-import TripInfoView from '../view/trip-info';
-import SwitchesView from '../view/switches';
-import FiltersView from '../view/filters';
-import EventsSortFormView from '../view/events-sort-form';
-import EventsView from '../view/events';
+import SortView from '../view/events-sort-form';
+import PointListView from '../view/point-list';
 import PointPresenter from '../presenter/point';
 import {render, RenderPosition} from '../utils/render';
-
+import {updateItem} from '../utils/tools';
 
 export default class Trip {
   constructor(tripContainer) {
     this._tripContainer = tripContainer;
-    this._pointPresenter = [];
+    this._pointPresenter = {};
 
-    this._tripControlsHandler = tripContainer.querySelector(`.trip-controls`);
-    this._tripSwitchesHandler = this._tripControlsHandler.querySelector(`.visually-hidden`);
-    this._tripEventsHandler = document.querySelector(`.trip-events`);
-    this._tripEventsListHandler = document.querySelector(`.trip-events__list`);
+    this._sortComponent = new SortView();
+    this._pointListComponent = new PointListView();
 
     this._handleModeChange = this._handleModeChange.bind(this);
+    this._handlePointChange = this._handlePointChange.bind(this);
   }
 
   init(tripPoints) {
     this._tripPoints = tripPoints.slice();
 
-    render(this._tripContainer, new TripInfoView(tripPoints), RenderPosition.AFTERBEGIN);
-    render(this._tripSwitchesHandler, new SwitchesView(), RenderPosition.AFTERBEGIN);
-    render(this._tripControlsHandler, new FiltersView(), RenderPosition.BEFOREEND);
-    render(this._tripEventsHandler, new EventsSortFormView(), RenderPosition.BEFOREEND);
-    render(this._tripEventsHandler, new EventsView(), RenderPosition.BEFOREEND);
-
-    this._tripEventsListHandler = document.querySelector(`.trip-events__list`);
+    render(this._tripContainer, this._sortComponent, RenderPosition.BEFOREEND);
+    render(this._tripContainer, this._pointListComponent, RenderPosition.BEFOREEND);
 
     this._renderPoints();
   }
 
   _handleModeChange() {
-    for (const point of this._pointPresenter) {
-      point.resetView();
-    }
+    Object.values(this._pointPresenter)
+      .forEach((presenter) => presenter.resetView());
+  }
+
+  _handlePointChange(updatedPoint) {
+    this._tripPoints = updateItem(this._tripPoints, updatedPoint);
+    this._pointPresenter[updatedPoint.id].init(updatedPoint);
   }
 
   _renderPoint(point) {
-    const pointPresenter = new PointPresenter(this._tripEventsListHandler, this._handleModeChange);
+    const pointPresenter = new PointPresenter(this._pointListComponent, this._handleModeChange, this._handlePointChange);
     pointPresenter.init(point);
-    this._pointPresenter.push(pointPresenter);
+    this._pointPresenter[point.id] = pointPresenter;
   }
 
   _renderPoints() {
