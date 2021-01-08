@@ -63,3 +63,11 @@ export function getRandomOffers(type) {
 
   return offers;
 }
+
+export function updateItem(items, update) {
+  const index = items.findIndex((item) => item.id === update.id);
+
+  return (index === -1)
+    ? items
+    : [...items.slice(0, index), update, ...items.slice(index + 1)];
+}
