@@ -7,15 +7,18 @@ import InfoDate from './info-date';
 import Cost from './cost';
 
 function createTripInfo(tripPoints) {
-  const firstPoint = tripPoints[0];
-  const lastPoint = tripPoints[tripPoints.length - 1];
-  const tripRange = dayjs(lastPoint.dates[0]).diff(dayjs(firstPoint.dates[0]), `month`, true) > 0
-    ? `${dayjs(firstPoint.dates[0]).format(`MMM DD`)}&nbsp;&mdash;&nbsp;${dayjs(lastPoint.dates[0]).format(`MMM DD`)}`
-    : `${dayjs(firstPoint.dates[0]).format(`MMM DD`)}&nbsp;&mdash;&nbsp;${dayjs(lastPoint.dates[0]).format(`DD`)}`;
+  const firstDay = dayjs(tripPoints[0].dates[0]);
+  const lastDay = dayjs(tripPoints[tripPoints.length - 1].dates[0]);
 
+  const tripRange = lastDay.format(`M`) - firstDay.format(`M`) !== 0
+    ? `${firstDay.format(`MMM DD`)}&nbsp;&mdash;&nbsp;${lastDay.format(`MMM DD`)}`
+    : `${firstDay.format(`MMM DD`)}&nbsp;&mdash;&nbsp;${lastDay.format(`DD`)}`;
+
+  const firstCity = tripPoints[0].city;
+  const lastCity = tripPoints[tripPoints.length - 1].city;
   let tripTitle;
   if (tripPoints.length > 3) {
-    tripTitle = `${firstPoint.city}&nbsp;&mdash;&nbsp;&#8230;&nbsp;&mdash;&nbsp;${lastPoint.city}`;
+    tripTitle = `${firstCity}&nbsp;&mdash;&nbsp;&#8230;&nbsp;&mdash;&nbsp;${lastCity}`;
   } else {
     tripTitle = tripPoints.map((elem) => elem.city).join(`&nbsp;&mdash;&nbsp;`);
   }
