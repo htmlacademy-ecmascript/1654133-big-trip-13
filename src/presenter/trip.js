@@ -7,7 +7,7 @@ import {updateItem} from '../utils/tools';
 export default class Trip {
   constructor(tripContainer) {
     this._tripContainer = tripContainer;
-    this._pointPresenter = {};
+    this._pointsPresenters = {};
 
     this._sortComponent = new SortView();
     this._pointListComponent = new PointListView();
@@ -26,19 +26,19 @@ export default class Trip {
   }
 
   _handleModeChange() {
-    Object.values(this._pointPresenter)
+    Object.values(this._pointsPresenters)
       .forEach((presenter) => presenter.resetView());
   }
 
   _handlePointChange(updatedPoint) {
     this._tripPoints = updateItem(this._tripPoints, updatedPoint);
-    this._pointPresenter[updatedPoint.id].init(updatedPoint);
+    this._pointsPresenters[updatedPoint.id].init(updatedPoint);
   }
 
   _renderPoint(point) {
     const pointPresenter = new PointPresenter(this._pointListComponent, this._handleModeChange, this._handlePointChange);
     pointPresenter.init(point);
-    this._pointPresenter[point.id] = pointPresenter;
+    this._pointsPresenters[point.id] = pointPresenter;
   }
 
   _renderPoints() {
