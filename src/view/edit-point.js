@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 
-import AbstractView from './abstract';
+import SmartView from './abstract';
 
 import {CITIES} from '../const';
 import {nanoid} from 'nanoid';
@@ -97,7 +97,7 @@ function createEditPoint(point) {
     </li>`;
 }
 
-export default class EditPoint extends AbstractView {
+export default class EditPoint extends SmartView {
   constructor(point) {
     super();
 
