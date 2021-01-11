@@ -51,7 +51,7 @@ export default class Point {
 
   resetView() {
     if (this._mode !== Mode.DEFAULT) {
-      this._replaceFormToPoint();
+      this._replaceEditToView();
     }
   }
 
@@ -61,27 +61,27 @@ export default class Point {
     }
   }
 
-  _replacePointToForm() {
+  _replaceViewToEdit() {
     replace(this._pointEditComponent, this._pointComponent);
     this._changeMode();
     this._mode = Mode.EDITING;
   }
 
-  _replaceFormToPoint() {
+  _replaceEditToView() {
     replace(this._pointComponent, this._pointEditComponent);
     this._mode = Mode.DEFAULT;
   }
 
   _handleFormSubmit() {
-    this._replaceFormToPoint();
+    this._replaceEditToView();
   }
 
   _handleEditClick() {
-    this._replacePointToForm();
+    this._replaceViewToEdit();
   }
 
   _handleCloseFormClick() {
-    this._replaceFormToPoint();
+    this._replaceEditToView();
   }
 
   _handleFavoriteClick() {
