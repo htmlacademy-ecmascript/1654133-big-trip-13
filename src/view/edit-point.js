@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 
-import SmartView from './abstract';
+import SmartView from './smart';
 
 import {CITIES} from '../const';
 import {nanoid} from 'nanoid';
@@ -101,13 +101,37 @@ export default class EditPoint extends SmartView {
   constructor(point) {
     super();
 
-    this._point = point;
+    this._data = point;
     this._submitFormHandler = this._submitFormHandler.bind(this);
     this._closeFormHandler = this._closeFormHandler.bind(this);
+    this._eventTypeHandler = this._eventTypeHandler.bind(this);
+    this._eventDestinationHandler = this._eventDestinationHandler.bind(this);
+
+    this._setInnerHandlers();
   }
 
   getTemplate() {
-    return createEditPoint(this._point);
+    return createEditPoint(this._data);
+  }
+
+  restoreHandlers() {
+    this._setInnerHandlers();
+    this.setCloseFormClick(this._callback.closeFormClick);
+    this.setSubmitFormClick(this._callback.submitFormClick);
+  }
+
+  reset(point) {
+    this.updateData(point);
+  }
+
+  _setInnerHandlers() {
+    this.getElement()
+      .querySelector(`.event__type-list`)
+      .addEventListener(`click`, this._eventTypeHandler);
+
+    this.getElement()
+      .querySelector(`.event__input--destination`)
+      .addEventListener(`change`, this._eventDestinationHandler);
   }
 
   _submitFormHandler(evt) {
@@ -118,6 +142,18 @@ export default class EditPoint extends SmartView {
   _closeFormHandler(evt) {
     evt.preventDefault();
     this._callback.closeFormClick();
+  }
+
+  _eventTypeHandler(evt) {
+    evt.preventDefault();
+    console.log(evt.target.textContent);
+    this.updateData({type: evt.target.textContent});
+  }
+
+  _eventDestinationHandler(evt) {
+    evt.preventDefault();
+    const city = evt.target.value;
+    console.log(evt.target.value);
   }
 
   setSubmitFormClick(callback) {

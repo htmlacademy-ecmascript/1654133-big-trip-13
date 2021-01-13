@@ -81,6 +81,7 @@ export default class Point {
   }
 
   _handleCloseFormClick() {
+    this._pointEditComponent.reset(this._point);
     this._replaceEditToView();
   }
 
