@@ -17,9 +17,10 @@ export default class Smart extends Abstract {
 
     const newElement = this.getElement();
     parent.replaceChild(newElement, prevElement);
+    this.restoreHandlers();
   }
 
-  updateDate(update, justDataUpdating) {
+  updateData(update, justDataUpdating = false) {
     if (!update) {
       return;
     }
