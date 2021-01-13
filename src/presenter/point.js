@@ -72,7 +72,8 @@ export default class Point {
     this._mode = Mode.DEFAULT;
   }
 
-  _handleFormSubmit() {
+  _handleFormSubmit(point) {
+    this._changeData(point);
     this._replaceEditToView();
   }
 

@@ -2,23 +2,40 @@ import dayjs from 'dayjs';
 
 import SmartView from './smart';
 
-import {CITIES} from '../const';
-import {nanoid} from 'nanoid';
+import {CITIES, OFFERS} from '../const';
+import {getRandomInteger, getRandomDescription, getRandomImages} from '../utils/tools';
 
 import EventTypes from './event-types';
 
-function createOffersTemplate(offers) {
-  if (Object.keys(offers).length === 0) {
+function getIdFromOffer(offer) {
+  const [title, price] = offer;
+  return `${title.replaceAll(` `, `-`)}-${price}`;
+}
+
+function getOfferFromId(id) {
+  const newId = id.slice().split(`-`);
+  newId.shift();
+  newId.shift();
+
+  const price = parseInt(newId.pop(), 10);
+  const title = newId.join(` `);
+
+  return [title, price];
+}
+
+function createOffersTemplate(offers, type) {
+  const availableOffers = OFFERS[type];
+  if (availableOffers.length === 0) {
     return ``;
   }
 
   let template = ``;
 
-  for (const offer of Object.getOwnPropertyNames(offers)) {
-    const offerId = nanoid();
-    const price = offers[offer];
+  for (const offer of availableOffers) {
+    const price = offers[offer] || getRandomInteger(10, 100);
+    const offerId = getIdFromOffer([offer, price]);
     template += `<div class="event__offer-selector">
-    <input class="event__offer-checkbox  visually-hidden" id="event-offer-${offerId}" type="checkbox" name="event-offer-${offerId}" checked>
+    <input class="event__offer-checkbox  visually-hidden" id="event-offer-${offerId}" type="checkbox" name="event-offer-${offerId}" ${Object.keys(offers).includes(offer) ? `checked` : ``}>
     <label class="event__offer-label" for="event-offer-${offerId}">
         <span class="event__offer-title">${offer}</span>
         &plus;&euro;&nbsp;
@@ -84,7 +101,7 @@ function createEditPoint(point) {
           </button>
         </header>
         <section class="event__details">
-  ${createOffersTemplate(offers)}
+  ${createOffersTemplate(offers, type)}
 
   ${description.length !== 0
     ? `<section class="event__section  event__section--destination">
@@ -106,6 +123,7 @@ export default class EditPoint extends SmartView {
     this._closeFormHandler = this._closeFormHandler.bind(this);
     this._eventTypeHandler = this._eventTypeHandler.bind(this);
     this._eventDestinationHandler = this._eventDestinationHandler.bind(this);
+    this._offerHandler = this._offerHandler.bind(this);
 
     this._setInnerHandlers();
   }
@@ -125,18 +143,26 @@ export default class EditPoint extends SmartView {
   }
 
   _setInnerHandlers() {
-    this.getElement()
+    const element = this.getElement();
+
+    element
       .querySelector(`.event__type-list`)
       .addEventListener(`click`, this._eventTypeHandler);
 
-    this.getElement()
+    element
       .querySelector(`.event__input--destination`)
       .addEventListener(`change`, this._eventDestinationHandler);
+
+    const availableOffers = element.getElementsByClassName(`event__offer-checkbox`);
+
+    for (const offer of availableOffers) {
+      offer.addEventListener(`click`, this._offerHandler);
+    }
   }
 
   _submitFormHandler(evt) {
     evt.preventDefault();
-    this._callback.submitFormClick();
+    this._callback.submitFormClick(this._data);
   }
 
   _closeFormHandler(evt) {
@@ -146,14 +172,38 @@ export default class EditPoint extends SmartView {
 
   _eventTypeHandler(evt) {
     evt.preventDefault();
-    console.log(evt.target.textContent);
-    this.updateData({type: evt.target.textContent});
+    this.updateData({
+      type: evt.target.textContent,
+      offers: {},
+    });
   }
 
   _eventDestinationHandler(evt) {
     evt.preventDefault();
     const city = evt.target.value;
-    console.log(evt.target.value);
+    if (CITIES.includes(city)) {
+      this.updateData({
+        city: evt.target.value,
+        description: getRandomDescription(),
+        images: getRandomImages(),
+      });
+    } else {
+      evt.target.value = ``;
+      evt.target.placeholder = `Choose city`;
+
+      evt.target.focus();
+      evt.target.setCustomValidity(`City not found`);
+    }
+  }
+
+  _offerHandler(evt) {
+    const [title, price] = getOfferFromId(evt.target.id);
+
+    if (evt.target.checked) {
+      this._data.offers[title] = price;
+    } else {
+      delete this._data.offers[title];
+    }
   }
 
   setSubmitFormClick(callback) {
