@@ -183,7 +183,7 @@ export default class EditPoint extends SmartView {
     const city = evt.target.value;
     if (CITIES.includes(city)) {
       this.updateData({
-        city: evt.target.value,
+        city,
         description: getRandomDescription(),
         images: getRandomImages(),
       });
