@@ -3,6 +3,7 @@ import SwitchesView from './view/switches';
 import FiltersView from './view/filters';
 import TripPresenter from './presenter/trip';
 import PointsModel from './model/points';
+import FilterModel from './model/filter';
 import {generateTripPoint} from './mock/point';
 import {render, RenderPosition} from './utils/render';
 
@@ -14,6 +15,8 @@ tripPoints.sort((a, b) => {
 
 const pointsModel = new PointsModel();
 pointsModel.setPoints(tripPoints);
+
+const filterModel = new FilterModel();
 
 const tripMainHandler = document.querySelector(`.trip-main`);
 const tripControlsHandler = tripMainHandler.querySelector(`.trip-controls`);

@@ -56,3 +56,9 @@ export const OFFERS = {
   'Sightseeing': [`Book tickets`, `Lunch in city`, `Buy souvenirs`, `Take a tour guide`],
   'Restaurant': [`Order Uber`, `Add wine`, `Take a music band`],
 };
+
+export const FilterType = {
+  EVERYTHING: `everything`,
+  FUTURE: `future`,
+  PAST: `past`,
+};
