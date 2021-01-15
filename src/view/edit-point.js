@@ -7,8 +7,7 @@ import {getRandomInteger, getRandomDescription, getRandomImages} from '../utils/
 
 import EventTypes from './event-types';
 
-function getIdFromOffer(offer) {
-  const [title, price] = offer;
+function getIdFromOffer([title, price]) {
   return `${title.replaceAll(` `, `-`)}-${price}`;
 }
 
