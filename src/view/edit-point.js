@@ -50,8 +50,8 @@ function createOffersTemplate(offers, type) {
 }
 
 
-function createEditPoint(point) {
-  const {type, city, description, price, dates, offers} = point;
+function createEditPoint(data) {
+  const {type, city, description, price, dates, offers} = data;
   const startDate = dayjs(dates[0]).format(`DD/MM/YY HH:mm`);
   const endDate = dayjs(dates[1]).format(`DD/MM/YY HH:mm`);
 
@@ -117,7 +117,7 @@ export default class EditPoint extends SmartView {
   constructor(point) {
     super();
 
-    this._point = point;
+    this._data = point;
     this._submitFormHandler = this._submitFormHandler.bind(this);
     this._closeFormHandler = this._closeFormHandler.bind(this);
     this._eventTypeHandler = this._eventTypeHandler.bind(this);
@@ -128,7 +128,7 @@ export default class EditPoint extends SmartView {
   }
 
   getTemplate() {
-    return createEditPoint(this._point);
+    return createEditPoint(this._data);
   }
 
   restoreHandlers() {
@@ -161,7 +161,7 @@ export default class EditPoint extends SmartView {
 
   _submitFormHandler(evt) {
     evt.preventDefault();
-    this._callback.submitFormClick(this._point);
+    this._callback.submitFormClick(this._data);
   }
 
   _closeFormHandler(evt) {
@@ -199,9 +199,9 @@ export default class EditPoint extends SmartView {
     const [title, price] = getOfferFromId(evt.target.id);
 
     if (evt.target.checked) {
-      this._point.offers[title] = price;
+      this._data.offers[title] = price;
     } else {
-      delete this._point.offers[title];
+      delete this._data.offers[title];
     }
   }
 
