@@ -5,8 +5,9 @@ import {render, RenderPosition} from '../utils/render';
 import {updateItem} from '../utils/tools';
 
 export default class Trip {
-  constructor(tripContainer) {
+  constructor(tripContainer, pointsModel) {
     this._tripContainer = tripContainer;
+    this._pointsModel = pointsModel;
     this._pointsPresenters = {};
 
     this._sortComponent = new SortView();
@@ -16,9 +17,7 @@ export default class Trip {
     this._handlePointChange = this._handlePointChange.bind(this);
   }
 
-  init(tripPoints) {
-    this._tripPoints = tripPoints.slice();
-
+  init() {
     render(this._tripContainer, this._sortComponent, RenderPosition.BEFOREEND);
     render(this._tripContainer, this._pointListComponent, RenderPosition.BEFOREEND);
 
@@ -31,7 +30,7 @@ export default class Trip {
   }
 
   _handlePointChange(updatedPoint) {
-    this._tripPoints = updateItem(this._tripPoints, updatedPoint);
+    this._pointsModel.updatePoint(updatedPoint);
     this._pointsPresenters[updatedPoint.id].init(updatedPoint);
   }
 
@@ -42,6 +41,6 @@ export default class Trip {
   }
 
   _renderPoints() {
-    this._tripPoints.forEach((point) => this._renderPoint(point));
+    this._pointsModel.getPoints().forEach((point) => this._renderPoint(point));
   }
 }
