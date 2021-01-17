@@ -1,5 +1,8 @@
-export default class Points {
+import Observer from '../utils/observer';
+
+export default class Points extends Observer {
   constructor() {
+    super();
     this._points = [];
   }
 
@@ -7,8 +10,8 @@ export default class Points {
     return this._points;
   }
 
-  setPoints(value) {
-    this._points = value.slice();
+  setPoints(points) {
+    this._points = points.slice();
   }
 
   updatePoint(update) {
@@ -23,5 +26,7 @@ export default class Points {
       update,
       ...this._points.slice(index + 1)
     ];
+
+    this._notify(update);
   }
 }
