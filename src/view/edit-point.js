@@ -120,6 +120,7 @@ export default class EditPoint extends SmartView {
     this._data = point;
     this._submitFormHandler = this._submitFormHandler.bind(this);
     this._closeFormHandler = this._closeFormHandler.bind(this);
+    this._formDeleteClickHandler = this._formDeleteClickHandler.bind(this);
     this._eventTypeHandler = this._eventTypeHandler.bind(this);
     this._eventDestinationHandler = this._eventDestinationHandler.bind(this);
     this._offerHandler = this._offerHandler.bind(this);
@@ -135,6 +136,7 @@ export default class EditPoint extends SmartView {
     this._setInnerHandlers();
     this.setCloseFormClick(this._callback.closeFormClick);
     this.setSubmitFormClick(this._callback.submitFormClick);
+    this.setDeleteClick(this._callback.deleteClick);
   }
 
   reset(point) {
@@ -217,5 +219,17 @@ export default class EditPoint extends SmartView {
     this.getElement()
       .querySelector(`.event__rollup-btn`)
       .addEventListener(`click`, this._closeFormHandler);
+  }
+
+  _formDeleteClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.deleteClick(this._data);
+  }
+
+  setDeleteClick(callback) {
+    this._callback.deleteClick = callback;
+    this.getElement()
+      .querySelector(`.event__reset-btn`)
+      .addEventListener(`click`, this._formDeleteClickHandler);
   }
 }
