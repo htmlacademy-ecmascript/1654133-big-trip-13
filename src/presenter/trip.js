@@ -2,9 +2,10 @@ import SortView from '../view/events-sort-form';
 import PointListView from '../view/point-list';
 import NoPointView from '../view/no-point';
 import PointPresenter from '../presenter/point';
+import PointNewPresenter from '../presenter/point-new';
 import {render, remove, RenderPosition} from '../utils/render';
 import {filter} from '../utils/filter';
-import {UserAction, UpdateType} from '../const';
+import {UserAction, UpdateType, FilterType} from '../const';
 
 export default class Trip {
   constructor(tripContainer, pointsModel, filterModel) {
@@ -21,6 +22,8 @@ export default class Trip {
     this._handlePointChange = this._handlePointChange.bind(this);
     this._handleViewAction = this._handleViewAction.bind(this);
     this._handleModelEvent = this._handleModelEvent.bind(this);
+
+    this._pointNewPresenter = new PointNewPresenter(this._pointListComponent, this._handleViewAction);
   }
 
   init() {
@@ -32,6 +35,11 @@ export default class Trip {
     this._renderTrip();
   }
 
+  createPoint() {
+    this._filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
+    this._pointNewPresenter.init();
+  }
+
   _getPoints() {
     const filterType = this._filterModel.getFilter();
     const points = this._pointsModel.getPoints();
@@ -41,6 +49,8 @@ export default class Trip {
   }
 
   _handleModeChange() {
+    this._pointNewPresenter.destroy();
+
     Object.values(this._pointsPresenters)
       .forEach((presenter) => presenter.resetView());
   }
@@ -54,6 +64,7 @@ export default class Trip {
         this._pointsModel.deletePoint(updateType, update);
         break;
       case UserAction.ADD_POINT:
+        this._pointsModel.addPoint(updateType, update);
         break;
     }
   }
@@ -80,6 +91,8 @@ export default class Trip {
   }
 
   _clearTrip() {
+    this._pointNewPresenter.destroy();
+
     Object
       .values(this._pointsPresenters)
       .forEach((presenter) => presenter.destroy());

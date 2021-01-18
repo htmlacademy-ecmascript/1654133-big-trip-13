@@ -90,7 +90,7 @@ function createEditPoint(data) {
               <span class="visually-hidden">Price</span>
               &euro;
           </label>
-          <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${price}">
+          <input class="event__input  event__input--price" id="event-price-1" type="number" min="0" name="event-price" value="${price}">
           </div>
 
           <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
@@ -123,6 +123,7 @@ export default class EditPoint extends SmartView {
     this._formDeleteClickHandler = this._formDeleteClickHandler.bind(this);
     this._eventTypeHandler = this._eventTypeHandler.bind(this);
     this._eventDestinationHandler = this._eventDestinationHandler.bind(this);
+    this._eventPriceHandler = this._eventPriceHandler.bind(this);
     this._offerHandler = this._offerHandler.bind(this);
 
     this._setInnerHandlers();
@@ -153,6 +154,10 @@ export default class EditPoint extends SmartView {
     element
       .querySelector(`.event__input--destination`)
       .addEventListener(`change`, this._eventDestinationHandler);
+
+    element
+      .querySelector(`.event__input--price`)
+      .addEventListener(`input`, this._eventPriceHandler);
 
     const availableOffers = element.getElementsByClassName(`event__offer-checkbox`);
 
@@ -195,6 +200,13 @@ export default class EditPoint extends SmartView {
       evt.target.focus();
       evt.target.setCustomValidity(`City not found`);
     }
+  }
+
+  _eventPriceHandler(evt) {
+    evt.preventDefault();
+    const priceInput = evt.target.value;
+    const price = priceInput.length > 0 ? parseInt(evt.target.value, 10) : 0;
+    this.updateData({price}, false);
   }
 
   _offerHandler(evt) {

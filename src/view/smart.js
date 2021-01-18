@@ -20,11 +20,13 @@ export default class Smart extends Abstract {
     this.restoreHandlers();
   }
 
-  updateData(update) {
+  updateData(update, isUpdateElement = true) {
     if (update) {
       this._data = Object.assign({}, this._data, update);
 
-      this.updateElement();
+      if (isUpdateElement) {
+        this.updateElement();
+      }
     }
   }
 }

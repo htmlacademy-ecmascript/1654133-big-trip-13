@@ -33,3 +33,8 @@ const tripEventsElement = document.querySelector(`.trip-events`);
 
 const tripPresenter = new TripPresenter(tripEventsElement, pointsModel, filterModel);
 tripPresenter.init();
+
+document.querySelector(`.trip-main__event-add-btn`).addEventListener(`click`, (evt) => {
+  evt.preventDefault();
+  tripPresenter.createPoint();
+});

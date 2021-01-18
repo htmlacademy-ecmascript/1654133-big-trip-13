@@ -44,4 +44,13 @@ export default class Points extends Observer {
 
     this._notify(updateType);
   }
+
+  addPoint(updateType, update) {
+    this._points = [update, ...this._points];
+    this._points.sort((a, b) => {
+      return a.dates[0] - b.dates[0];
+    });
+
+    this._notify(updateType, update);
+  }
 }
