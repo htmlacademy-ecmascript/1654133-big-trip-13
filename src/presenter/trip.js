@@ -3,12 +3,14 @@ import PointListView from '../view/point-list';
 import NoPointView from '../view/no-point';
 import PointPresenter from '../presenter/point';
 import {render, remove, RenderPosition} from '../utils/render';
+import {filter} from '../utils/filter';
 import {UserAction, UpdateType} from '../const';
 
 export default class Trip {
-  constructor(tripContainer, pointsModel) {
+  constructor(tripContainer, pointsModel, filterModel) {
     this._tripContainer = tripContainer;
     this._pointsModel = pointsModel;
+    this._filterModel = filterModel;
     this._pointsPresenters = {};
 
     this._sortComponent = null;
@@ -25,8 +27,17 @@ export default class Trip {
     render(this._tripContainer, this._pointListComponent, RenderPosition.BEFOREEND);
 
     this._pointsModel.addObserver(this._handleModelEvent);
+    this._filterModel.addObserver(this._handleModelEvent);
 
     this._renderTrip();
+  }
+
+  _getPoints() {
+    const filterType = this._filterModel.getFilter();
+    const points = this._pointsModel.getPoints();
+    const filteredPoints = filter[filterType](points);
+
+    return filteredPoints;
   }
 
   _handleModeChange() {
@@ -53,6 +64,10 @@ export default class Trip {
         this._pointsPresenters[data.id].init(data);
         break;
       case UpdateType.MINOR:
+        this._clearTrip();
+        this._renderTrip();
+        break;
+      case UpdateType.MAJOR:
         this._clearTrip();
         this._renderTrip();
         break;
@@ -88,12 +103,13 @@ export default class Trip {
     this._pointsPresenters[point.id] = pointPresenter;
   }
 
-  _renderPoints() {
-    this._pointsModel.getPoints().forEach((point) => this._renderPoint(point));
+  _renderPoints(points) {
+    points.forEach((point) => this._renderPoint(point));
   }
 
   _renderTrip() {
-    const pointCount = this._pointsModel.getPoints().length;
+    const points = this._getPoints();
+    const pointCount = points.length;
 
     if (pointCount === 0) {
       this._renderNoPoints();
@@ -101,6 +117,6 @@ export default class Trip {
     }
 
     this._renderSort();
-    this._renderPoints();
+    this._renderPoints(points);
   }
 }

@@ -82,9 +82,9 @@ export default class Point {
 
   _handleFormSubmit(point) {
     this._changeData(
-      UserAction.UPDATE_POINT,
-      UpdateType.PATCH,
-      point);
+        UserAction.UPDATE_POINT,
+        UpdateType.PATCH,
+        point);
     this._replaceEditToView();
   }
 
@@ -99,9 +99,9 @@ export default class Point {
 
   _handleFavoriteClick() {
     this._changeData(
-      UserAction.UPDATE_POINT,
-      UpdateType.PATCH,
-      Object.assign({}, this._point, {isFavorite: !this._point.isFavorite}));
+        UserAction.UPDATE_POINT,
+        UpdateType.PATCH,
+        Object.assign({}, this._point, {isFavorite: !this._point.isFavorite}));
   }
 
   _handleDeleteClick(point) {

@@ -31,5 +31,5 @@ filterPresenter.init();
 
 const tripEventsElement = document.querySelector(`.trip-events`);
 
-const tripPresenter = new TripPresenter(tripEventsElement, pointsModel);
+const tripPresenter = new TripPresenter(tripEventsElement, pointsModel, filterModel);
 tripPresenter.init();
