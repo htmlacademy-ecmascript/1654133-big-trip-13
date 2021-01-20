@@ -50,8 +50,8 @@ function createOffersTemplate(offers, type) {
 }
 
 
-function createEditPoint(point) {
-  const {type, city, description, price, dates, offers} = point;
+function createEditPoint(data) {
+  const {type, city, description, price, dates, offers} = data;
   const startDate = dayjs(dates[0]).format(`DD/MM/YY HH:mm`);
   const endDate = dayjs(dates[1]).format(`DD/MM/YY HH:mm`);
 
@@ -90,7 +90,7 @@ function createEditPoint(point) {
               <span class="visually-hidden">Price</span>
               &euro;
           </label>
-          <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${price}">
+          <input class="event__input  event__input--price" id="event-price-1" type="number" min="0" name="event-price" value="${price}">
           </div>
 
           <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
@@ -117,24 +117,27 @@ export default class EditPoint extends SmartView {
   constructor(point) {
     super();
 
-    this._point = point;
+    this._data = point;
     this._submitFormHandler = this._submitFormHandler.bind(this);
     this._closeFormHandler = this._closeFormHandler.bind(this);
+    this._formDeleteClickHandler = this._formDeleteClickHandler.bind(this);
     this._eventTypeHandler = this._eventTypeHandler.bind(this);
     this._eventDestinationHandler = this._eventDestinationHandler.bind(this);
+    this._eventPriceHandler = this._eventPriceHandler.bind(this);
     this._offerHandler = this._offerHandler.bind(this);
 
     this._setInnerHandlers();
   }
 
   getTemplate() {
-    return createEditPoint(this._point);
+    return createEditPoint(this._data);
   }
 
   restoreHandlers() {
     this._setInnerHandlers();
     this.setCloseFormClick(this._callback.closeFormClick);
     this.setSubmitFormClick(this._callback.submitFormClick);
+    this.setDeleteClick(this._callback.deleteClick);
   }
 
   reset(point) {
@@ -152,6 +155,10 @@ export default class EditPoint extends SmartView {
       .querySelector(`.event__input--destination`)
       .addEventListener(`change`, this._eventDestinationHandler);
 
+    element
+      .querySelector(`.event__input--price`)
+      .addEventListener(`input`, this._eventPriceHandler);
+
     const availableOffers = element.getElementsByClassName(`event__offer-checkbox`);
 
     for (const offer of availableOffers) {
@@ -161,7 +168,7 @@ export default class EditPoint extends SmartView {
 
   _submitFormHandler(evt) {
     evt.preventDefault();
-    this._callback.submitFormClick(this._point);
+    this._callback.submitFormClick(this._data);
   }
 
   _closeFormHandler(evt) {
@@ -195,13 +202,20 @@ export default class EditPoint extends SmartView {
     }
   }
 
+  _eventPriceHandler(evt) {
+    evt.preventDefault();
+    const priceInput = evt.target.value;
+    const price = priceInput.length > 0 ? parseInt(evt.target.value, 10) : 0;
+    this.updateData({price}, false);
+  }
+
   _offerHandler(evt) {
     const [title, price] = getOfferFromId(evt.target.id);
 
     if (evt.target.checked) {
-      this._point.offers[title] = price;
+      this._data.offers[title] = price;
     } else {
-      delete this._point.offers[title];
+      delete this._data.offers[title];
     }
   }
 
@@ -217,5 +231,17 @@ export default class EditPoint extends SmartView {
     this.getElement()
       .querySelector(`.event__rollup-btn`)
       .addEventListener(`click`, this._closeFormHandler);
+  }
+
+  _formDeleteClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.deleteClick(this._data);
+  }
+
+  setDeleteClick(callback) {
+    this._callback.deleteClick = callback;
+    this.getElement()
+      .querySelector(`.event__reset-btn`)
+      .addEventListener(`click`, this._formDeleteClickHandler);
   }
 }

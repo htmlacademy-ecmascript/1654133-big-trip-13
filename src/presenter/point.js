@@ -1,6 +1,7 @@
 import PointView from '../view/point';
 import EditPointView from '../view/edit-point';
 import {render, replace, remove, RenderPosition} from '../utils/render';
+import {UserAction, UpdateType} from '../const';
 
 const Mode = {
   DEFAULT: `DEFAULT`,
@@ -21,6 +22,7 @@ export default class Point {
     this._handleEditClick = this._handleEditClick.bind(this);
     this._handleCloseFormClick = this._handleCloseFormClick.bind(this);
     this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
+    this._handleDeleteClick = this._handleDeleteClick.bind(this);
   }
 
   init(point) {
@@ -33,9 +35,10 @@ export default class Point {
     this._pointEditComponent = new EditPointView(point);
 
     this._pointComponent.setEditClickHandler(this._handleEditClick);
+    this._pointComponent.setFavoriteClickHandler(this._handleFavoriteClick);
     this._pointEditComponent.setSubmitFormClick(this._handleFormSubmit);
     this._pointEditComponent.setCloseFormClick(this._handleCloseFormClick);
-    this._pointComponent.setFavoriteClickHandler(this._handleFavoriteClick);
+    this._pointEditComponent.setDeleteClick(this._handleDeleteClick);
 
     if (prevPointComponent === null || prevPointEditComponent === null) {
       render(this._pointListContainer, this._pointComponent, RenderPosition.BEFOREEND);
@@ -53,6 +56,11 @@ export default class Point {
     if (this._mode !== Mode.DEFAULT) {
       this._replaceEditToView();
     }
+  }
+
+  destroy() {
+    remove(this._pointComponent);
+    remove(this._pointEditComponent);
   }
 
   _replaceIfExist(newComponent, oldComponent) {
@@ -73,7 +81,10 @@ export default class Point {
   }
 
   _handleFormSubmit(point) {
-    this._changeData(point);
+    this._changeData(
+        UserAction.UPDATE_POINT,
+        UpdateType.PATCH,
+        point);
     this._replaceEditToView();
   }
 
@@ -87,6 +98,17 @@ export default class Point {
   }
 
   _handleFavoriteClick() {
-    this._changeData(Object.assign({}, this._point, {isFavorite: !this._point.isFavorite}));
+    this._changeData(
+        UserAction.UPDATE_POINT,
+        UpdateType.PATCH,
+        Object.assign({}, this._point, {isFavorite: !this._point.isFavorite}));
+  }
+
+  _handleDeleteClick(point) {
+    this._changeData(
+        UserAction.DELETE_POINT,
+        UpdateType.MINOR,
+        point
+    );
   }
 }

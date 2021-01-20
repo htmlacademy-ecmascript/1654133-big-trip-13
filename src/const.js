@@ -56,3 +56,21 @@ export const OFFERS = {
   'Sightseeing': [`Book tickets`, `Lunch in city`, `Buy souvenirs`, `Take a tour guide`],
   'Restaurant': [`Order Uber`, `Add wine`, `Take a music band`],
 };
+
+export const FilterType = {
+  EVERYTHING: `everything`,
+  FUTURE: `future`,
+  PAST: `past`,
+};
+
+export const UserAction = {
+  UPDATE_POINT: `UPDATE_POINT`,
+  ADD_POINT: `ADD_POINT`,
+  DELETE_POINT: `DELETE_POINT`,
+};
+
+export const UpdateType = {
+  PATCH: `PATCH`,
+  MINOR: `MINOR`,
+  MAJOR: `MAJOR`,
+};
