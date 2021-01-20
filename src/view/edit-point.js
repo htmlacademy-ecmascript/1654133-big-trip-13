@@ -49,9 +49,28 @@ function createOffersTemplate(offers, type) {
   </section>`;
 }
 
+function createImagesTemplate(images) {
+  return images.length
+    ? `<div class="event__photos-container">
+        <div class="event__photos-tape">
+        ${images.map((image) => `<img class="event__photo" src="${image}" alt="Event photo">`)}
+        </div>
+      </div>`
+    : ``;
+}
+
+function createDescriptionTemplate(description, images) {
+  return description.length
+    ? `<section class="event__section  event__section--destination">
+          <h3 class="event__section-title  event__section-title--destination">Destination</h3>
+          <p class="event__destination-description">${description}</p>
+          ${createImagesTemplate(images)}
+        </section>`
+    : ``;
+}
 
 function createEditPoint(data, isNewPoint) {
-  const {type, city, description, price, dates, offers} = data;
+  const {type, city, description, price, dates, offers, images} = data;
   const startDate = dayjs(dates[0]).format(`DD/MM/YY HH:mm`);
   const endDate = dayjs(dates[1]).format(`DD/MM/YY HH:mm`);
 
@@ -102,12 +121,7 @@ function createEditPoint(data, isNewPoint) {
         <section class="event__details">
   ${createOffersTemplate(offers, type)}
 
-  ${description.length
-    ? `<section class="event__section  event__section--destination">
-        <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-        <p class="event__destination-description">${description}</p>
-      </section>`
-    : ``}
+  ${createDescriptionTemplate(description, images)}
         </section>
       </form>
     </li>`;
