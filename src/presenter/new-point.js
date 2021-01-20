@@ -25,18 +25,21 @@ export default class NewPoint {
     this._destroyCallback = null;
 
     this._handleFormSubmit = this._handleFormSubmit.bind(this);
-    this._handleDeleteClick = this._handleDeleteClick.bind(this);
+    this._handleCancelClick = this._handleCancelClick.bind(this);
+    this._handleEscKeyDown = this._handleEscKeyDown.bind(this);
   }
 
   init() {
     if (this._pointEditComponent === null) {
-      this._pointEditComponent = new EditPointView(BLANK_POINT);
+      this._pointEditComponent = new EditPointView(BLANK_POINT, true);
 
       this._pointEditComponent.setSubmitFormClick(this._handleFormSubmit);
-      this._pointEditComponent.setDeleteClick(this._handleDeleteClick);
-      this._pointEditComponent.setCloseFormClick(this._handleDeleteClick);
+      this._pointEditComponent.setDeleteClick(this._handleCancelClick);
+      this._pointEditComponent.setCloseFormClick(this._handleCancelClick);
 
       render(this._pointListContainer, this._pointEditComponent, RenderPosition.AFTERBEGIN);
+
+      document.addEventListener(`keydown`, this._handleEscKeyDown);
     }
   }
 
@@ -48,6 +51,8 @@ export default class NewPoint {
 
       remove(this._pointEditComponent);
       this._pointEditComponent = null;
+
+      document.removeEventListener(`keydown`, this._handleEscKeyDown);
     }
   }
 
@@ -61,7 +66,14 @@ export default class NewPoint {
     this.destroy();
   }
 
-  _handleDeleteClick() {
+  _handleCancelClick() {
     this.destroy();
+  }
+
+  _handleEscKeyDown(evt) {
+    if (evt.key === `Escape` || evt.key === `Esc`) {
+      evt.preventDefault();
+      this.destroy();
+    }
   }
 }

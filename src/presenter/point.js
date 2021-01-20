@@ -23,6 +23,7 @@ export default class Point {
     this._handleCloseFormClick = this._handleCloseFormClick.bind(this);
     this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
     this._handleDeleteClick = this._handleDeleteClick.bind(this);
+    this._handleEscKeyDown = this._handleEscKeyDown.bind(this);
   }
 
   init(point) {
@@ -71,12 +72,14 @@ export default class Point {
 
   _replaceViewToEdit() {
     replace(this._pointEditComponent, this._pointComponent);
+    document.addEventListener(`keydown`, this._handleEscKeyDown);
     this._changeMode();
     this._mode = Mode.EDITING;
   }
 
   _replaceEditToView() {
     replace(this._pointComponent, this._pointEditComponent);
+    document.removeEventListener(`keydown`, this._handleEscKeyDown);
     this._mode = Mode.DEFAULT;
   }
 
@@ -110,5 +113,13 @@ export default class Point {
         UpdateType.MINOR,
         point
     );
+  }
+
+  _handleEscKeyDown(evt) {
+    if (evt.key === `Escape` || evt.key === `Esc`) {
+      evt.preventDefault();
+      this._pointEditComponent.reset(this._point);
+      this._replaceEditToView();
+    }
   }
 }
