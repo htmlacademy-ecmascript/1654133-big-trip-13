@@ -99,6 +99,7 @@ export default class Trip {
     this._pointsPresenters = {};
 
     remove(this._sortComponent);
+    remove(this._noPointComponent);
   }
 
   _renderSort() {
