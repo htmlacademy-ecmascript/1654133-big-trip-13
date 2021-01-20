@@ -2,7 +2,7 @@ import SortView from '../view/events-sort-form';
 import PointListView from '../view/point-list';
 import NoPointView from '../view/no-point';
 import PointPresenter from '../presenter/point';
-import PointNewPresenter from '../presenter/point-new';
+import NewPointPresenter from '../presenter/new-point';
 import {render, remove, RenderPosition} from '../utils/render';
 import {filter} from '../utils/filter';
 import {UserAction, UpdateType, FilterType} from '../const';
@@ -23,7 +23,7 @@ export default class Trip {
     this._handleViewAction = this._handleViewAction.bind(this);
     this._handleModelEvent = this._handleModelEvent.bind(this);
 
-    this._pointNewPresenter = new PointNewPresenter(this._pointListComponent, this._handleViewAction);
+    this._pointNewPresenter = new NewPointPresenter(this._pointListComponent, this._handleViewAction);
   }
 
   init() {

@@ -16,7 +16,7 @@ const BLANK_POINT = {
   isFavorite: false,
 };
 
-export default class PointNew {
+export default class NewPoint {
   constructor(pointListContainer, changeData) {
     this._pointListContainer = pointListContainer;
     this._changeData = changeData;

@@ -14,17 +14,17 @@ export default class Summary {
   }
 
   init() {
-    const pointsCount = this._pointsModel.getPoints().length;
+    const points = this._pointsModel.getPoints();
     const prevSummaryComponent = this._summaryComponent;
 
-    if (pointsCount === 0) {
+    if (!points.length) {
       if (this._summaryComponent !== null) {
         remove(this._summaryComponent);
       }
       return;
     }
 
-    this._summaryComponent = new TripInfoView(this._pointsModel.getPoints());
+    this._summaryComponent = new TripInfoView(points);
 
     if (prevSummaryComponent === null) {
       render(this._summaryContainer, this._summaryComponent, RenderPosition.AFTERBEGIN);
