@@ -21,33 +21,38 @@ export default class NewPoint {
     this._pointListContainer = pointListContainer;
     this._changeData = changeData;
 
-    this._pointEditComponent = null;
+    this._editPointComponent = null;
     this._destroyCallback = null;
 
     this._handleFormSubmit = this._handleFormSubmit.bind(this);
-    this._handleDeleteClick = this._handleDeleteClick.bind(this);
+    this._handleCancelClick = this._handleCancelClick.bind(this);
+    this._handleEscKeyDown = this._handleEscKeyDown.bind(this);
   }
 
   init() {
-    if (this._pointEditComponent === null) {
-      this._pointEditComponent = new EditPointView(BLANK_POINT);
+    if (this._editPointComponent === null) {
+      this._editPointComponent = new EditPointView(BLANK_POINT, true);
 
-      this._pointEditComponent.setSubmitFormClick(this._handleFormSubmit);
-      this._pointEditComponent.setDeleteClick(this._handleDeleteClick);
-      this._pointEditComponent.setCloseFormClick(this._handleDeleteClick);
+      this._editPointComponent.setSubmitFormClick(this._handleFormSubmit);
+      this._editPointComponent.setDeleteClick(this._handleCancelClick);
+      this._editPointComponent.setCloseFormClick(this._handleCancelClick);
 
-      render(this._pointListContainer, this._pointEditComponent, RenderPosition.AFTERBEGIN);
+      render(this._pointListContainer, this._editPointComponent, RenderPosition.AFTERBEGIN);
+
+      document.addEventListener(`keydown`, this._handleEscKeyDown);
     }
   }
 
   destroy() {
-    if (this._pointEditComponent !== null) {
+    if (this._editPointComponent !== null) {
       if (this._destroyCallback !== null) {
         this._destroyCallback();
       }
 
-      remove(this._pointEditComponent);
-      this._pointEditComponent = null;
+      remove(this._editPointComponent);
+      this._editPointComponent = null;
+
+      document.removeEventListener(`keydown`, this._handleEscKeyDown);
     }
   }
 
@@ -61,7 +66,14 @@ export default class NewPoint {
     this.destroy();
   }
 
-  _handleDeleteClick() {
+  _handleCancelClick() {
     this.destroy();
+  }
+
+  _handleEscKeyDown(evt) {
+    if (evt.key === `Escape` || evt.key === `Esc`) {
+      evt.preventDefault();
+      this.destroy();
+    }
   }
 }

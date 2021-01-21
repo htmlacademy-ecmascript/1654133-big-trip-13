@@ -49,9 +49,28 @@ function createOffersTemplate(offers, type) {
   </section>`;
 }
 
+function createImagesTemplate(images) {
+  return images.length
+    ? `<div class="event__photos-container">
+        <div class="event__photos-tape">
+        ${images.map((image) => `<img class="event__photo" src="${image}" alt="Event photo">`)}
+        </div>
+      </div>`
+    : ``;
+}
 
-function createEditPoint(data) {
-  const {type, city, description, price, dates, offers} = data;
+function createDescriptionTemplate(description, images) {
+  return description.length
+    ? `<section class="event__section  event__section--destination">
+          <h3 class="event__section-title  event__section-title--destination">Destination</h3>
+          <p class="event__destination-description">${description}</p>
+          ${createImagesTemplate(images)}
+        </section>`
+    : ``;
+}
+
+function createEditPoint(data, isNewPoint) {
+  const {type, city, description, price, dates, offers, images} = data;
   const startDate = dayjs(dates[0]).format(`DD/MM/YY HH:mm`);
   const endDate = dayjs(dates[1]).format(`DD/MM/YY HH:mm`);
 
@@ -94,7 +113,7 @@ function createEditPoint(data) {
           </div>
 
           <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
-          <button class="event__reset-btn" type="reset">Delete</button>
+          <button class="event__reset-btn" type="reset">${isNewPoint ? `Cancel` : `Delete`}</button>
           <button class="event__rollup-btn" type="button">
           <span class="visually-hidden">Open event</span>
           </button>
@@ -102,22 +121,18 @@ function createEditPoint(data) {
         <section class="event__details">
   ${createOffersTemplate(offers, type)}
 
-  ${description.length !== 0
-    ? `<section class="event__section  event__section--destination">
-        <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-        <p class="event__destination-description">${description}</p>
-      </section>`
-    : ``}
+  ${createDescriptionTemplate(description, images)}
         </section>
       </form>
     </li>`;
 }
 
 export default class EditPoint extends SmartView {
-  constructor(point) {
+  constructor(point, isNewPoint = false) {
     super();
 
     this._data = point;
+    this._isNewPoint = isNewPoint;
     this._submitFormHandler = this._submitFormHandler.bind(this);
     this._closeFormHandler = this._closeFormHandler.bind(this);
     this._formDeleteClickHandler = this._formDeleteClickHandler.bind(this);
@@ -130,7 +145,7 @@ export default class EditPoint extends SmartView {
   }
 
   getTemplate() {
-    return createEditPoint(this._data);
+    return createEditPoint(this._data, this._isNewPoint);
   }
 
   restoreHandlers() {

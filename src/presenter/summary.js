@@ -20,6 +20,7 @@ export default class Summary {
     if (!points.length) {
       if (this._summaryComponent !== null) {
         remove(this._summaryComponent);
+        this._summaryComponent = null;
       }
       return;
     }
