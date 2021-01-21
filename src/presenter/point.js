@@ -15,7 +15,7 @@ export default class Point {
     this._changeData = changeData;
 
     this._pointComponent = null;
-    this._pointEditComponent = null;
+    this._editPointComponent = null;
     this._mode = Mode.DEFAULT;
 
     this._handleFormSubmit = this._handleFormSubmit.bind(this);
@@ -30,16 +30,16 @@ export default class Point {
     this._point = point;
 
     const prevPointComponent = this._pointComponent;
-    const prevPointEditComponent = this._pointEditComponent;
+    const prevPointEditComponent = this._editPointComponent;
 
     this._pointComponent = new PointView(point);
-    this._pointEditComponent = new EditPointView(point);
+    this._editPointComponent = new EditPointView(point);
 
     this._pointComponent.setEditClickHandler(this._handleEditClick);
     this._pointComponent.setFavoriteClickHandler(this._handleFavoriteClick);
-    this._pointEditComponent.setSubmitFormClick(this._handleFormSubmit);
-    this._pointEditComponent.setCloseFormClick(this._handleCloseFormClick);
-    this._pointEditComponent.setDeleteClick(this._handleDeleteClick);
+    this._editPointComponent.setSubmitFormClick(this._handleFormSubmit);
+    this._editPointComponent.setCloseFormClick(this._handleCloseFormClick);
+    this._editPointComponent.setDeleteClick(this._handleDeleteClick);
 
     if (prevPointComponent === null || prevPointEditComponent === null) {
       render(this._pointListContainer, this._pointComponent, RenderPosition.BEFOREEND);
@@ -47,7 +47,7 @@ export default class Point {
     }
 
     this._replaceIfExist(this._pointComponent, prevPointComponent);
-    this._replaceIfExist(this._pointEditComponent, prevPointEditComponent);
+    this._replaceIfExist(this._editPointComponent, prevPointEditComponent);
 
     remove(prevPointComponent);
     remove(prevPointEditComponent);
@@ -61,7 +61,7 @@ export default class Point {
 
   destroy() {
     remove(this._pointComponent);
-    remove(this._pointEditComponent);
+    remove(this._editPointComponent);
   }
 
   _replaceIfExist(newComponent, oldComponent) {
@@ -71,14 +71,14 @@ export default class Point {
   }
 
   _replaceViewToEdit() {
-    replace(this._pointEditComponent, this._pointComponent);
+    replace(this._editPointComponent, this._pointComponent);
     document.addEventListener(`keydown`, this._handleEscKeyDown);
     this._changeMode();
     this._mode = Mode.EDITING;
   }
 
   _replaceEditToView() {
-    replace(this._pointComponent, this._pointEditComponent);
+    replace(this._pointComponent, this._editPointComponent);
     document.removeEventListener(`keydown`, this._handleEscKeyDown);
     this._mode = Mode.DEFAULT;
   }
@@ -96,7 +96,7 @@ export default class Point {
   }
 
   _handleCloseFormClick() {
-    this._pointEditComponent.reset(this._point);
+    this._editPointComponent.reset(this._point);
     this._replaceEditToView();
   }
 
@@ -118,7 +118,7 @@ export default class Point {
   _handleEscKeyDown(evt) {
     if (evt.key === `Escape` || evt.key === `Esc`) {
       evt.preventDefault();
-      this._pointEditComponent.reset(this._point);
+      this._editPointComponent.reset(this._point);
       this._replaceEditToView();
     }
   }
