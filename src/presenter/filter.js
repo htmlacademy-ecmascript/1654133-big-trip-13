@@ -42,11 +42,9 @@ export default class Filter {
   }
 
   _handleFilterTypeChange(filterType) {
-    if (this._currentFilter === filterType) {
-      return;
+    if (this._currentFilter !== filterType) {
+      this._filterModel.setFilter(UpdateType.MAJOR, filterType);
     }
-
-    this._filterModel.setFilter(UpdateType.MAJOR, filterType);
   }
 
   _getFilters() {

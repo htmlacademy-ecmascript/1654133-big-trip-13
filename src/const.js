@@ -74,3 +74,9 @@ export const UpdateType = {
   MINOR: `MINOR`,
   MAJOR: `MAJOR`,
 };
+
+export const SortType = {
+  DEFAULT: `day`,
+  TIME: `time`,
+  PRICE: `price`,
+};
