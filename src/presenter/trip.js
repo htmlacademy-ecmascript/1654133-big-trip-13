@@ -93,7 +93,7 @@ export default class Trip {
         this._renderTrip();
         break;
       case UpdateType.MAJOR:
-        this._clearTrip({resetSortType: true});
+        this._clearTrip(true);
         this._renderTrip();
         break;
     }
@@ -112,7 +112,7 @@ export default class Trip {
     }
   }
 
-  _clearTrip({resetSortType = false} = {}) {
+  _clearTrip(resetSortType = false) {
     this._pointNewPresenter.destroy();
 
     Object
