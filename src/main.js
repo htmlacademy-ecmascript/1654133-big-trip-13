@@ -9,9 +9,6 @@ import {render, RenderPosition} from './utils/render';
 
 const TRIP_POINTS = 20;
 const tripPoints = new Array(TRIP_POINTS).fill().map(generateTripPoint);
-tripPoints.sort((a, b) => {
-  return a.dates[0] - b.dates[0];
-});
 
 const pointsModel = new PointsModel();
 pointsModel.setPoints(tripPoints);
