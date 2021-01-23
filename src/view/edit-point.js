@@ -181,15 +181,21 @@ export default class EditPoint extends SmartView {
       onChange: this._endDateChangeHadler,
     };
 
+    if (this._startDatepicker) {
+      this._startDatepicker.destroy();
+      this._startDatepicker = null;
+    }
+
+    if (this._endDatepicker) {
+      this._endDatepicker.destroy();
+      this._endDatepicker = null;
+    }
+
     this._setFlatpickr(this._startDatepicker, `#event-start-time-1`, startDateConfig);
     this._setFlatpickr(this._endDatepicker, `#event-end-time-1`, endDateConfig);
   }
 
   _setFlatpickr(datepicker, selector, flatpickrSettings) {
-    if (datepicker) {
-      datepicker.destroy();
-    }
-
     datepicker = flatpickr(
         this.getElement().querySelector(selector),
         Object.assign(
