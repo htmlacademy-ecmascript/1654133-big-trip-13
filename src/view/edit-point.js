@@ -147,6 +147,8 @@ export default class EditPoint extends SmartView {
     this._eventDestinationHandler = this._eventDestinationHandler.bind(this);
     this._eventPriceHandler = this._eventPriceHandler.bind(this);
     this._offerHandler = this._offerHandler.bind(this);
+    this._startDateChangeHadler = this._startDateChangeHadler.bind(this);
+    this._endDateChangeHadler = this._endDateChangeHadler.bind(this);
 
     this._setInnerHandlers();
     this._setDatepicker();
@@ -175,6 +177,7 @@ export default class EditPoint extends SmartView {
     }
     const endDateConfig = {
       defaultDate: this._data.dates[1],
+      minDate: this._data.dates[0],
       onChange: this._endDateChangeHadler,
     }
 
@@ -232,14 +235,15 @@ export default class EditPoint extends SmartView {
   }
 
   _startDateChangeHadler([userDate]) {
-    evt.preventDefault();
     this.updateData({
-      dates: [dayjs(userDate).toDate(), dates[1]],
+      dates: [dayjs(userDate).toDate(), this._data.dates[1]],
     });
   }
 
   _endDateChangeHadler([userDate]) {
-    console.log(userDate);
+    this.updateData({
+      dates: [this._data.dates[0], dayjs(userDate).toDate()],
+    });
   }
 
   _eventTypeHandler(evt) {
