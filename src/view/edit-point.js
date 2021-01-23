@@ -136,6 +136,10 @@ export default class EditPoint extends SmartView {
 
     this._data = point;
     this._isNewPoint = isNewPoint;
+
+    this._startDatepicker = null;
+    this._endDatepicker = null;
+
     this._submitFormHandler = this._submitFormHandler.bind(this);
     this._closeFormHandler = this._closeFormHandler.bind(this);
     this._formDeleteClickHandler = this._formDeleteClickHandler.bind(this);
@@ -145,6 +149,8 @@ export default class EditPoint extends SmartView {
     this._offerHandler = this._offerHandler.bind(this);
 
     this._setInnerHandlers();
+    this._setDatepicker(this._startDatepicker, `#event-start-time-1`, {defaultDate: this._data.dates[0], onChange: this._startDateChangeHadler});
+    this._setDatepicker(this._endDatepicker, `#event-end-time-1`, {defaultDate: this._data.dates[1], onChange: this._endDateChangeHadler});
   }
 
   getTemplate() {
@@ -152,6 +158,8 @@ export default class EditPoint extends SmartView {
   }
 
   restoreHandlers() {
+    this._setDatepicker(this._startDatepicker, `#event-start-time-1`, this._data.dates[0]);
+    this._setDatepicker(this._endDatepicker, `#event-end-time-1`, this._data.dates[1]);
     this._setInnerHandlers();
     this.setCloseFormClick(this._callback.closeFormClick);
     this.setSubmitFormClick(this._callback.submitFormClick);
@@ -160,6 +168,22 @@ export default class EditPoint extends SmartView {
 
   reset(point) {
     this.updateData(point);
+  }
+
+  _setDatepicker(datepicker, selector, flatpickrSettings) {
+    if (datepicker) {
+      datepicker.destroy();
+    }
+
+    datepicker = flatpickr(
+      this.getElement().querySelector(selector),
+      Object.assign(
+        {
+          enableTime: true,
+          dateFormat: "d/m/Y H:i",
+        },
+        flatpickrSettings)
+    );
   }
 
   _setInnerHandlers() {
@@ -192,6 +216,14 @@ export default class EditPoint extends SmartView {
   _closeFormHandler(evt) {
     evt.preventDefault();
     this._callback.closeFormClick();
+  }
+
+  _startDateChangeHadler([userDate]) {
+    console.log(userDate);
+  }
+
+  _endDateChangeHadler([userDate]) {
+    console.log(userDate);
   }
 
   _eventTypeHandler(evt) {
