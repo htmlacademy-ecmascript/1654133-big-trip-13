@@ -188,6 +188,7 @@ export default class EditPoint extends SmartView {
   _setFlatpickr(datepicker, selector, flatpickrSettings) {
     if (datepicker) {
       datepicker.destroy();
+      datepicker = null;
     }
 
     datepicker = flatpickr(
