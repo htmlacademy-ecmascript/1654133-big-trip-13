@@ -149,8 +149,7 @@ export default class EditPoint extends SmartView {
     this._offerHandler = this._offerHandler.bind(this);
 
     this._setInnerHandlers();
-    this._setDatepicker(this._startDatepicker, `#event-start-time-1`, {defaultDate: this._data.dates[0], onChange: this._startDateChangeHadler});
-    this._setDatepicker(this._endDatepicker, `#event-end-time-1`, {defaultDate: this._data.dates[1], onChange: this._endDateChangeHadler});
+    this._setDatepicker();
   }
 
   getTemplate() {
@@ -158,8 +157,7 @@ export default class EditPoint extends SmartView {
   }
 
   restoreHandlers() {
-    this._setDatepicker(this._startDatepicker, `#event-start-time-1`, this._data.dates[0]);
-    this._setDatepicker(this._endDatepicker, `#event-end-time-1`, this._data.dates[1]);
+    this._setDatepicker();
     this._setInnerHandlers();
     this.setCloseFormClick(this._callback.closeFormClick);
     this.setSubmitFormClick(this._callback.submitFormClick);
@@ -170,7 +168,21 @@ export default class EditPoint extends SmartView {
     this.updateData(point);
   }
 
-  _setDatepicker(datepicker, selector, flatpickrSettings) {
+  _setDatepicker() {
+    const startDateConfig = {
+      defaultDate: this._data.dates[0],
+      onChange: this._startDateChangeHadler,
+    }
+    const endDateConfig = {
+      defaultDate: this._data.dates[1],
+      onChange: this._endDateChangeHadler,
+    }
+
+    this._setFlatpickr(this._startDatepicker, `#event-start-time-1`, startDateConfig);
+    this._setFlatpickr(this._endDatepicker, `#event-end-time-1`, endDateConfig);
+  }
+
+  _setFlatpickr(datepicker, selector, flatpickrSettings) {
     if (datepicker) {
       datepicker.destroy();
     }
@@ -180,6 +192,7 @@ export default class EditPoint extends SmartView {
       Object.assign(
         {
           enableTime: true,
+          time_24hr: true,
           dateFormat: "d/m/Y H:i",
         },
         flatpickrSettings)
@@ -219,7 +232,10 @@ export default class EditPoint extends SmartView {
   }
 
   _startDateChangeHadler([userDate]) {
-    console.log(userDate);
+    evt.preventDefault();
+    this.updateData({
+      dates: [dayjs(userDate).toDate(), dates[1]],
+    });
   }
 
   _endDateChangeHadler([userDate]) {
