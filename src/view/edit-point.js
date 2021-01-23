@@ -147,6 +147,8 @@ export default class EditPoint extends SmartView {
     this._eventDestinationHandler = this._eventDestinationHandler.bind(this);
     this._eventPriceHandler = this._eventPriceHandler.bind(this);
     this._offerHandler = this._offerHandler.bind(this);
+    this._startDateChangeHadler = this._startDateChangeHadler.bind(this);
+    this._endDateChangeHadler = this._endDateChangeHadler.bind(this);
 
     this._setInnerHandlers();
     this._setDatepicker();
@@ -172,11 +174,12 @@ export default class EditPoint extends SmartView {
     const startDateConfig = {
       defaultDate: this._data.dates[0],
       onChange: this._startDateChangeHadler,
-    }
+    };
     const endDateConfig = {
       defaultDate: this._data.dates[1],
+      minDate: this._data.dates[0],
       onChange: this._endDateChangeHadler,
-    }
+    };
 
     this._setFlatpickr(this._startDatepicker, `#event-start-time-1`, startDateConfig);
     this._setFlatpickr(this._endDatepicker, `#event-end-time-1`, endDateConfig);
@@ -188,14 +191,14 @@ export default class EditPoint extends SmartView {
     }
 
     datepicker = flatpickr(
-      this.getElement().querySelector(selector),
-      Object.assign(
-        {
-          enableTime: true,
-          time_24hr: true,
-          dateFormat: "d/m/Y H:i",
-        },
-        flatpickrSettings)
+        this.getElement().querySelector(selector),
+        Object.assign(
+            {
+              enableTime: true,
+              time_24hr: true,
+              dateFormat: `d/m/Y H:i`,
+            },
+            flatpickrSettings)
     );
   }
 
@@ -232,14 +235,15 @@ export default class EditPoint extends SmartView {
   }
 
   _startDateChangeHadler([userDate]) {
-    evt.preventDefault();
     this.updateData({
-      dates: [dayjs(userDate).toDate(), dates[1]],
+      dates: [dayjs(userDate).toDate(), this._data.dates[1]],
     });
   }
 
   _endDateChangeHadler([userDate]) {
-    console.log(userDate);
+    this.updateData({
+      dates: [this._data.dates[0], dayjs(userDate).toDate()],
+    });
   }
 
   _eventTypeHandler(evt) {
