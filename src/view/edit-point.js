@@ -6,6 +6,9 @@ import {CITIES, OFFERS} from '../const';
 import {getRandomInteger, getRandomDescription, getRandomImages} from '../utils/tools';
 
 import EventTypes from './event-types';
+import flatpickr from 'flatpickr';
+
+import "../../node_modules/flatpickr/dist/flatpickr.min.css";
 
 function getIdFromOffer([title, price]) {
   return `${title.replaceAll(` `, `-`)}-${price}`;
