@@ -6,6 +6,9 @@ import {CITIES, OFFERS} from '../const';
 import {getRandomInteger, getRandomDescription, getRandomImages} from '../utils/tools';
 
 import EventTypes from './event-types';
+import flatpickr from 'flatpickr';
+
+import "../../node_modules/flatpickr/dist/flatpickr.min.css";
 
 function getIdFromOffer([title, price]) {
   return `${title.replaceAll(` `, `-`)}-${price}`;
@@ -133,6 +136,10 @@ export default class EditPoint extends SmartView {
 
     this._data = point;
     this._isNewPoint = isNewPoint;
+
+    this._startDatepicker = null;
+    this._endDatepicker = null;
+
     this._submitFormHandler = this._submitFormHandler.bind(this);
     this._closeFormHandler = this._closeFormHandler.bind(this);
     this._formDeleteClickHandler = this._formDeleteClickHandler.bind(this);
@@ -140,8 +147,11 @@ export default class EditPoint extends SmartView {
     this._eventDestinationHandler = this._eventDestinationHandler.bind(this);
     this._eventPriceHandler = this._eventPriceHandler.bind(this);
     this._offerHandler = this._offerHandler.bind(this);
+    this._startDateChangeHadler = this._startDateChangeHadler.bind(this);
+    this._endDateChangeHadler = this._endDateChangeHadler.bind(this);
 
     this._setInnerHandlers();
+    this._setDatepicker();
   }
 
   getTemplate() {
@@ -149,6 +159,7 @@ export default class EditPoint extends SmartView {
   }
 
   restoreHandlers() {
+    this._setDatepicker();
     this._setInnerHandlers();
     this.setCloseFormClick(this._callback.closeFormClick);
     this.setSubmitFormClick(this._callback.submitFormClick);
@@ -157,6 +168,44 @@ export default class EditPoint extends SmartView {
 
   reset(point) {
     this.updateData(point);
+  }
+
+  _setDatepicker() {
+    const startDateConfig = {
+      defaultDate: this._data.dates[0],
+      onChange: this._startDateChangeHadler,
+    };
+    const endDateConfig = {
+      defaultDate: this._data.dates[1],
+      minDate: this._data.dates[0],
+      onChange: this._endDateChangeHadler,
+    };
+
+    if (this._startDatepicker) {
+      this._startDatepicker.destroy();
+      this._startDatepicker = null;
+    }
+
+    if (this._endDatepicker) {
+      this._endDatepicker.destroy();
+      this._endDatepicker = null;
+    }
+
+    this._setFlatpickr(this._startDatepicker, `#event-start-time-1`, startDateConfig);
+    this._setFlatpickr(this._endDatepicker, `#event-end-time-1`, endDateConfig);
+  }
+
+  _setFlatpickr(datepicker, selector, flatpickrSettings) {
+    datepicker = flatpickr(
+        this.getElement().querySelector(selector),
+        Object.assign(
+            {
+              enableTime: true,
+              time_24hr: true,
+              dateFormat: `d/m/Y H:i`,
+            },
+            flatpickrSettings)
+    );
   }
 
   _setInnerHandlers() {
@@ -189,6 +238,18 @@ export default class EditPoint extends SmartView {
   _closeFormHandler(evt) {
     evt.preventDefault();
     this._callback.closeFormClick();
+  }
+
+  _startDateChangeHadler([userDate]) {
+    this.updateData({
+      dates: [dayjs(userDate).toDate(), this._data.dates[1]],
+    });
+  }
+
+  _endDateChangeHadler([userDate]) {
+    this.updateData({
+      dates: [this._data.dates[0], dayjs(userDate).toDate()],
+    });
   }
 
   _eventTypeHandler(evt) {
